@@ -264,7 +264,7 @@ function send_summa(client, $, profile){
                 .setColor('#0099ff')
                 .setTitle(`[${profile.pcName}]님의 섬의마음 수집현황`)
                 .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
   let check_Y = "";
   let check_N = "";
   
@@ -314,7 +314,7 @@ function send_opebir(client, $, profile){
                 .setColor('#0099ff')
                 .setTitle(`[${profile.pcName}]님의 오르페우스의별 수집현황`)
                 .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
   let check_Y = "";
   let check_N = "";
   
@@ -364,7 +364,7 @@ function send_gusim(client, $, profile){
                 .setColor('#0099ff')
                 .setTitle(`[${profile.pcName}]님의 거인의 심장 수집현황`)
                 .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
   let check_Y = "";
   let check_N = "";
   
@@ -414,7 +414,7 @@ function send_art(client, $, profile){
                 .setColor('#0099ff')
                 .setTitle(`[${profile.pcName}]님의 위대한 미술품 수집현황`)
                 .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
   let check_Y = "";
   let check_N = "";
   
@@ -464,7 +464,7 @@ function send_mokoko(client, $, profile){
                 .setColor('#0099ff')
                 .setTitle(`[${profile.pcName}]님의 모코코 수집현황`)
                 .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
   let check_Y = "";
   let check_N = "";
   
@@ -511,7 +511,7 @@ function send_mohummul(client, $, profile){
                 .setColor('#0099ff')
                 .setTitle(`[${profile.pcName}]님의 향해 모험물 수집현황`)
                 .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
   let check_Y = "";
   let check_N = "";
   
@@ -561,7 +561,7 @@ function send_gingphoy(client, $, profile){
                 .setColor('#0099ff')
                 .setTitle(`[${profile.pcName}]님의 이그네시아의 징표 수집현황`)
                 .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
   let check_Y = "";
   let check_N = "";
   
@@ -611,7 +611,7 @@ function send_segeasu(client, $, profile){
                 .setColor('#0099ff')
                 .setTitle(`[${profile.pcName}]님의 세계수의 잎 수집현황`)
                 .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
   let check_Y = "";
   let check_N = "";
   
