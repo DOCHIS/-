@@ -36,26 +36,37 @@ client.on('message', msg => {
     data    += "!섬마 [닉네임] : 섬의마음 수집현황\n";
     data    += "!테스트 : 서버 응답속도 테스트\n";
     data    += "\n";
-    data    += "**[ 이모티콘 ]**\n";
-    data    += "[감격의눈물], ";
-    data    += "[놀자에요], ";
-    data    += "[머쓱해요], ";
-    data    += "[뭐라구요], ";
-    data    += "[사랑해], ";
-    data    += "[웃기구요], ";
-    data    += "[웃프네요], ";
-    data    += "[정말이요], ";
-    data    += "[추천이요], ";
-    data    += "[화가나요], ";
-    data    += "[화이팅]";
+
+    let emote = "";
+    emote    += "[놀자에요], ";
+    emote    += "[머쓱해요], ";
+    emote    += "[뭐라구요], ";
+    emote    += "[사랑해], ";
+    emote    += "[웃기구요], ";
+    emote    += "[웃프네요], ";
+    emote    += "[정말이요], ";
+    emote    += "[추천이요], ";
+    emote    += "[화가나요], ";
+    emote    += "[화이팅]";
     
     const embed = new MessageEmbed()
       .setColor('#0099ff')
     	.setTitle('따봉도치봇 명령어 목록')
     	.setURL('https://discord.gg/UXWQryf5xT')
     	.setAuthor('따봉도치봇', 'https://i.imgur.com/vmiJ8kQ.jpg', 'https://discord.gg/UXWQryf5xT')
-    	.setDescription(data)
-    	.setImage('https://i.imgur.com/vmiJ8kQ.jpg')
+    	.addFields(
+        { name: "!도움말"           , value: "명령어 목록", inline: true },
+        { name: "!섬마 닉네임"      , value: "섬의마음 수집현황", inline: true },
+        { name: "!오페별 닉네임"    , value: "오르페우스의별 수집목록", inline: true },
+        { name: "!거심 닉네임"      , value: "거인의심장 수집목록", inline: true },
+        { name: "!미술품 닉네임"    , value: "위대한미술품 수집목록", inline: true },
+        { name: "!모코코 닉네임"    , value: "모코코씨앗 수집목록", inline: true },
+        { name: "!모험물 닉네임"    , value: "향해모험물 수집목록", inline: true },
+        { name: "!징표 닉네임"      , value: "이그네시아의징표 수집목록", inline: true },
+        { name: "!세계수 닉네임"    , value: "세계수의 잎 수집목록", inline: true },
+        { name: "이모티콘"          , value: emote, inline: false }
+      )
+    	.setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
     	.setFooter('문의는 헛삯#5433 으로 문의');
     msg.channel.send(embed);
   }
@@ -70,9 +81,44 @@ client.on('message', msg => {
     msg.reply('https://www.youtube.com/watch?v=tk0fOgAiNI8');
   }
 
-  // 모코코 [닉네임]
+  // 섬마 [닉네임]
   if (commend === '!섬마') {
     get_profile(msg, params, get_collection, send_summa);
+  }
+
+  // 오페별 [닉네임]
+  if (commend === '!오페별') {
+    get_profile(msg, params, get_collection, send_opebir);
+  }
+
+  // 거심 [닉네임]
+  if (commend === '!거심') {
+    get_profile(msg, params, get_collection, send_gusim);
+  }
+
+  // 미술품 [닉네임]
+  if (commend === '!미술품') {
+    get_profile(msg, params, get_collection, send_art);
+  }
+
+  // 모코코 [닉네임]
+  if (commend === '!모코코') {
+    get_profile(msg, params, get_collection, send_mokoko);
+  }
+
+  // 모험물 [닉네임]
+  if (commend === '!모험물') {
+    get_profile(msg, params, get_collection, send_mohummul);
+  }
+
+  // 징표 [닉네임]
+  if (commend === '!징표') {
+    get_profile(msg, params, get_collection, send_gingphoy);
+  }
+
+  // 세계수 [닉네임]
+  if (commend === '!세계수') {
+    get_profile(msg, params, get_collection, send_segeasu);
   }
   
   /////////////////
@@ -171,7 +217,7 @@ function get_collection(client, profile, callback){
 
   axios.get("https://m-lostark.game.onstove.com/Profile/GetCollection?" + queryString, {})
   .then(function (response) {
-    callback(client, cheerio.load(response.data) );
+    callback(client, cheerio.load(response.data), profile);
   })
   .catch(function (error) {
     return false;
@@ -183,8 +229,14 @@ function convert_queryString(object){
   return Object.entries(object).map(e => e.join('=')).join('&');;
 }
 
-// 섬마정보를 디코로 전달
-function send_summa(client, $){
+
+////////////////////////////////////
+// send functions
+// =========================
+
+
+// 섬마 디코로 전달
+function send_summa(client, $, profile){
   let data      = {
     'nowCount'   : $("#lui-tab1-1 .now-count").text(),
     'maxCount'   : $("#lui-tab1-1 .max-count").text()
@@ -208,16 +260,376 @@ function send_summa(client, $){
   });
 
   // 디스코드로 전송
-  let msg    = "";
+  const embed = new MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle(`[${profile.pcName}]님의 섬의마음 수집현황`)
+                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
+                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+  let check_Y = "";
+  let check_N = "";
+  
   for (index in list) {
     let row  = list[index];
-    msg     += `[${row.check}] - ${row.name}\n`;
+    if(row.check == '미획득'){
+      check_N   += `${row.name}\n`;
+    } else {
+      check_Y   += `${row.name}\n`;
+    }
   }
-  msg   += `====================\n`;
-  msg   += `섬마수집현황 ${data.nowCount} / ${data.maxCount}\n`;
-  msg   += `====================\n`;
+  embed.addFields(
+    { name: `획득 (${data.nowCount}개)`, value: check_Y ? check_Y : "-", inline: true },
+    { name: `미획득 (${data.maxCount-data.nowCount}개)`, value: check_N ? check_N : "-", inline: true }
+  )
 
-  client.channel.send(msg);
+  client.channel.send(embed);
 }
+
+
+// 오페별 디코로 전달
+function send_opebir(client, $, profile){
+  let data      = {
+    'nowCount'   : $("#lui-tab1-2 .now-count").text(),
+    'maxCount'   : $("#lui-tab1-2 .max-count").text()
+  };
+
+  // 데이터 추출
+  let list      = [];
+  let listObj   = $("#lui-tab1-2 .list").find("li");
+  listObj.each(function (index, elem) {
+    let obj     = listObj.eq(index);
+    let num     = obj.find("span").text();
+    let check   = obj.find("em").text();
+    let name    = obj.text();
+        name    = name.substring( num.length, name.length - (num.length + check.length) + 1 );
+
+    list.push({
+      num     : num,
+      name    : name,
+      check   : check ? '획  득' : '미획득'
+    });
+  });
+
+  // 디스코드로 전송
+  const embed = new MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle(`[${profile.pcName}]님의 오르페우스의별 수집현황`)
+                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
+                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+  let check_Y = "";
+  let check_N = "";
+  
+  for (index in list) {
+    let row  = list[index];
+    if(row.check == '미획득'){
+      check_N   += `${row.name}\n`;
+    } else {
+      check_Y   += `${row.name}\n`;
+    }
+  }
+  embed.addFields(
+    { name: `획득 (${data.nowCount}개)`, value: check_Y ? check_Y : "-", inline: true },
+    { name: `미획득 (${data.maxCount-data.nowCount}개)`, value: check_N ? check_N : "-", inline: true }
+  )
+
+  client.channel.send(embed);
+}
+
+
+// 거심 디코로 전달
+function send_gusim(client, $, profile){
+  let data      = {
+    'nowCount'   : $("#lui-tab1-3 .now-count").text(),
+    'maxCount'   : $("#lui-tab1-3 .max-count").text()
+  };
+
+  // 데이터 추출
+  let list      = [];
+  let listObj   = $("#lui-tab1-3 .list").find("li");
+  listObj.each(function (index, elem) {
+    let obj     = listObj.eq(index);
+    let num     = obj.find("span").text();
+    let check   = obj.find("em").text();
+    let name    = obj.text();
+        name    = name.substring( num.length, name.length - (num.length + check.length) + 1 );
+
+    list.push({
+      num     : num,
+      name    : name,
+      check   : check ? '획  득' : '미획득'
+    });
+  });
+
+  // 디스코드로 전송
+  const embed = new MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle(`[${profile.pcName}]님의 거인의 심장 수집현황`)
+                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
+                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+  let check_Y = "";
+  let check_N = "";
+  
+  for (index in list) {
+    let row  = list[index];
+    if(row.check == '미획득'){
+      check_N   += `${row.name}\n`;
+    } else {
+      check_Y   += `${row.name}\n`;
+    }
+  }
+  embed.addFields(
+    { name: `획득 (${data.nowCount}개)`, value: check_Y ? check_Y : "-", inline: true },
+    { name: `미획득 (${data.maxCount-data.nowCount}개)`, value: check_N ? check_N : "-", inline: true }
+  )
+
+  client.channel.send(embed);
+}
+
+
+// 미술품 디코로 전달
+function send_art(client, $, profile){
+  let data      = {
+    'nowCount'   : $("#lui-tab1-4 .now-count").text(),
+    'maxCount'   : $("#lui-tab1-4 .max-count").text()
+  };
+
+  // 데이터 추출
+  let list      = [];
+  let listObj   = $("#lui-tab1-4 .list").find("li");
+  listObj.each(function (index, elem) {
+    let obj     = listObj.eq(index);
+    let num     = obj.find("span").text();
+    let check   = obj.find("em").text();
+    let name    = obj.text();
+        name    = name.substring( num.length, name.length - (num.length + check.length) + 1 );
+
+    list.push({
+      num     : num,
+      name    : name,
+      check   : check ? '획  득' : '미획득'
+    });
+  });
+
+  // 디스코드로 전송
+  const embed = new MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle(`[${profile.pcName}]님의 위대한 미술품 수집현황`)
+                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
+                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+  let check_Y = "";
+  let check_N = "";
+  
+  for (index in list) {
+    let row  = list[index];
+    if(row.check == '미획득'){
+      check_N   += `${row.name}\n`;
+    } else {
+      check_Y   += `${row.name}\n`;
+    }
+  }
+  embed.addFields(
+    { name: `획득 (${data.nowCount}개)`, value: check_Y ? check_Y : "-", inline: true },
+    { name: `미획득 (${data.maxCount-data.nowCount}개)`, value: check_N ? check_N : "-", inline: true }
+  )
+
+  client.channel.send(embed);
+}
+
+
+// 모코코 디코로 전달
+function send_mokoko(client, $, profile){
+  let data      = {
+    'nowCount'   : $("#lui-tab1-5 .now-count").text(),
+    'maxCount'   : $("#lui-tab1-5 .max-count").text()
+  };
+
+  // 데이터 추출
+  let list      = [];
+  let listObj   = $("#lui-tab1-5 .list").find("li");
+  listObj.each(function (index, elem) {
+    let obj     = listObj.eq(index);
+    let num     = obj.find("span").text();
+    let check   = obj.find("em").text();
+    let name    = obj.text();
+        name    = name.substring( num.length, name.length - (num.length + check.length) + 1 );
+
+    list.push({
+      num     : num,
+      name    : name,
+      check   : check ? '획  득' : '미획득'
+    });
+  });
+
+  // 디스코드로 전송
+  const embed = new MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle(`[${profile.pcName}]님의 모코코 수집현황`)
+                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
+                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+  let check_Y = "";
+  let check_N = "";
+  
+  for (index in list) {
+    let row  = list[index];
+    if(row.check == '미획득'){
+      check_N   += `${row.name}\n`;
+    } else {
+      check_Y   += `${row.name}\n`;
+    }
+  }
+  embed.setDescription(`수집 ${data.nowCount}개 / 전체 ${data.maxCount}개`);
+
+  client.channel.send(embed);
+}
+
+
+// 모험물 디코로 전달
+function send_mohummul(client, $, profile){
+  let data      = {
+    'nowCount'   : $("#lui-tab1-6 .now-count").text(),
+    'maxCount'   : $("#lui-tab1-6 .max-count").text()
+  };
+
+  // 데이터 추출
+  let list      = [];
+  let listObj   = $("#lui-tab1-6 .list").find("li");
+  listObj.each(function (index, elem) {
+    let obj     = listObj.eq(index);
+    let num     = obj.find("span").text();
+    let check   = obj.find("em").text();
+    let name    = obj.text();
+        name    = name.substring( num.length, name.length - (num.length + check.length) + 1 );
+
+    list.push({
+      num     : num,
+      name    : name,
+      check   : check ? '획  득' : '미획득'
+    });
+  });
+
+  // 디스코드로 전송
+  const embed = new MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle(`[${profile.pcName}]님의 향해 모험물 수집현황`)
+                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
+                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+  let check_Y = "";
+  let check_N = "";
+  
+  for (index in list) {
+    let row  = list[index];
+    if(row.check == '미획득'){
+      check_N   += `${row.name}\n`;
+    } else {
+      check_Y   += `${row.name}\n`;
+    }
+  }
+  embed.addFields(
+    { name: `획득 (${data.nowCount}개)`, value: check_Y ? check_Y : "-", inline: true },
+    { name: `미획득 (${data.maxCount-data.nowCount}개)`, value: check_N ? check_N : "-", inline: true }
+  )
+
+  client.channel.send(embed);
+}
+
+
+// 징표 디코로 전달
+function send_gingphoy(client, $, profile){
+  let data      = {
+    'nowCount'   : $("#lui-tab1-7 .now-count").text(),
+    'maxCount'   : $("#lui-tab1-7 .max-count").text()
+  };
+
+  // 데이터 추출
+  let list      = [];
+  let listObj   = $("#lui-tab1-7 .list").find("li");
+  listObj.each(function (index, elem) {
+    let obj     = listObj.eq(index);
+    let num     = obj.find("span").text();
+    let check   = obj.find("em").text();
+    let name    = obj.text();
+        name    = name.substring( num.length, name.length - (num.length + check.length) + 1 );
+
+    list.push({
+      num     : num,
+      name    : name,
+      check   : check ? '획  득' : '미획득'
+    });
+  });
+
+  // 디스코드로 전송
+  const embed = new MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle(`[${profile.pcName}]님의 이그네시아의 징표 수집현황`)
+                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
+                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+  let check_Y = "";
+  let check_N = "";
+  
+  for (index in list) {
+    let row  = list[index];
+    if(row.check == '미획득'){
+      check_N   += `${row.name}\n`;
+    } else {
+      check_Y   += `${row.name}\n`;
+    }
+  }
+  embed.addFields(
+    { name: `획득 (${data.nowCount}개)`, value: check_Y ? check_Y : "-", inline: true },
+    { name: `미획득 (${data.maxCount-data.nowCount}개)`, value: check_N ? check_N : "-", inline: true }
+  )
+
+  client.channel.send(embed);
+}
+
+
+// 세계수 디코로 전달
+function send_segeasu(client, $, profile){
+  let data      = {
+    'nowCount'   : $("#lui-tab1-8 .now-count").text(),
+    'maxCount'   : $("#lui-tab1-8 .max-count").text()
+  };
+
+  // 데이터 추출
+  let list      = [];
+  let listObj   = $("#lui-tab1-8 .list").find("li");
+  listObj.each(function (index, elem) {
+    let obj     = listObj.eq(index);
+    let num     = obj.find("span").text();
+    let check   = obj.find("em").text();
+    let name    = obj.text();
+        name    = name.substring( num.length, name.length - (num.length + check.length) + 1 );
+
+    list.push({
+      num     : num,
+      name    : name,
+      check   : check ? '획  득' : '미획득'
+    });
+  });
+
+  // 디스코드로 전송
+  const embed = new MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle(`[${profile.pcName}]님의 세계수의 잎 수집현황`)
+                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
+                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+  let check_Y = "";
+  let check_N = "";
+  
+  for (index in list) {
+    let row  = list[index];
+    if(row.check == '미획득'){
+      check_N   += `${row.name}\n`;
+    } else {
+      check_Y   += `${row.name}\n`;
+    }
+  }
+  embed.addFields(
+    { name: `획득 (${data.nowCount}개)`, value: check_Y ? check_Y : "-", inline: true },
+    { name: `미획득 (${data.maxCount-data.nowCount}개)`, value: check_N ? check_N : "-", inline: true }
+  )
+
+  client.channel.send(embed);
+}
+
 
 client.login(config.token);
