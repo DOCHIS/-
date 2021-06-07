@@ -229,6 +229,63 @@ function convert_queryString(object){
   return Object.entries(object).map(e => e.join('=')).join('&');;
 }
 
+// 객체형태의 데이터를 embed 형식으로 변환
+function convert_embed(client, object){
+
+  // 형변환
+  object.data.nowCount    = parseInt(object.data.nowCount);
+  object.data.maxCount    = parseInt(object.data.maxCount);
+
+  // 디스코드로 전송
+  const embed = new MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle(`[${object.profile.pcName}]님의 ${object.name} 수집현황`)
+                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
+                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
+  let check_Y = "";
+  let check_N = "";
+
+  // 리스트 분리
+  for (index in object.list) {
+    let row  = object.list[index];
+    if(row.check == '미획득'){
+      check_N   += `${row.name}\n`;
+    } else {
+      check_Y   += `${row.name}\n`;
+    }
+  }
+
+  // 헤뷔카운터
+  let persent     = parseInt((object.data.nowCount / object.data.maxCount) * 100);
+  let persentG    = Math.round(persent / 5) * 5;
+  let persendS    = "";
+  let i           = 0;
+  for(i=0; i <= 100; i+=10){
+    if(i < persentG){
+      persendS    += "★";
+    } else {
+      persendS    += "☆";
+    }
+  }
+  persendS        += ` ${persent}%`;
+  if( persentG < 50) {
+    persendS      += `\n당신의 ${object.name}은 라이트 합니다.\n`;
+  } else if( persentG < 70) {
+    persendS      += `\n당신의 ${object.name}은 헤뷔 합니다.\n`;
+  } else {
+    persendS      += `\n당신의 ${object.name}은 초--헤뷔 합니다.\n`;
+  }
+
+  embed.addFields(
+    { name: `획득 (${object.data.nowCount}개)`                        , value: check_Y ? `\`\`\`${check_Y}\`\`\`` : "-", inline: true },
+    { name: `미획득 (${object.data.maxCount-object.data.nowCount}개)` , value: check_N ? `\`\`\`${check_N}\`\`\`` : "-", inline: true },
+    { name: `수집률` , value: `${persendS}` }
+  )
+
+  client.channel.send(embed);
+}
+
+
 
 ////////////////////////////////////
 // send functions
@@ -254,34 +311,18 @@ function send_summa(client, $, profile){
 
     list.push({
       num     : num,
-      name    : name,
+      name    : name.replace(/섬의 마음/g, '섬마'),
       check   : check ? '획  득' : '미획득'
     });
   });
 
   // 디스코드로 전송
-  const embed = new MessageEmbed()
-                .setColor('#0099ff')
-                .setTitle(`[${profile.pcName}]님의 섬의마음 수집현황`)
-                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
-  let check_Y = "";
-  let check_N = "";
-  
-  for (index in list) {
-    let row  = list[index];
-    if(row.check == '미획득'){
-      check_N   += `${row.name}\n`;
-    } else {
-      check_Y   += `${row.name}\n`;
-    }
-  }
-  embed.addFields(
-    { name: `획득 (${data.nowCount}개)`, value: check_Y ? check_Y : "-", inline: true },
-    { name: `미획득 (${data.maxCount-data.nowCount}개)`, value: check_N ? check_N : "-", inline: true }
-  )
-
-  client.channel.send(embed);
+  convert_embed(client, {
+    profile     : profile,
+    data        : data,
+    list        : list,
+    name        : '섬의마음'
+  });
 }
 
 
@@ -310,28 +351,12 @@ function send_opebir(client, $, profile){
   });
 
   // 디스코드로 전송
-  const embed = new MessageEmbed()
-                .setColor('#0099ff')
-                .setTitle(`[${profile.pcName}]님의 오르페우스의별 수집현황`)
-                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
-  let check_Y = "";
-  let check_N = "";
-  
-  for (index in list) {
-    let row  = list[index];
-    if(row.check == '미획득'){
-      check_N   += `${row.name}\n`;
-    } else {
-      check_Y   += `${row.name}\n`;
-    }
-  }
-  embed.addFields(
-    { name: `획득 (${data.nowCount}개)`, value: check_Y ? check_Y : "-", inline: true },
-    { name: `미획득 (${data.maxCount-data.nowCount}개)`, value: check_N ? check_N : "-", inline: true }
-  )
-
-  client.channel.send(embed);
+  convert_embed(client, {
+    profile     : profile,
+    data        : data,
+    list        : list,
+    name        : '오페별'
+  });
 }
 
 
@@ -360,28 +385,12 @@ function send_gusim(client, $, profile){
   });
 
   // 디스코드로 전송
-  const embed = new MessageEmbed()
-                .setColor('#0099ff')
-                .setTitle(`[${profile.pcName}]님의 거인의 심장 수집현황`)
-                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
-  let check_Y = "";
-  let check_N = "";
-  
-  for (index in list) {
-    let row  = list[index];
-    if(row.check == '미획득'){
-      check_N   += `${row.name}\n`;
-    } else {
-      check_Y   += `${row.name}\n`;
-    }
-  }
-  embed.addFields(
-    { name: `획득 (${data.nowCount}개)`, value: check_Y ? check_Y : "-", inline: true },
-    { name: `미획득 (${data.maxCount-data.nowCount}개)`, value: check_N ? check_N : "-", inline: true }
-  )
-
-  client.channel.send(embed);
+  convert_embed(client, {
+    profile     : profile,
+    data        : data,
+    list        : list,
+    name        : '거인의심장'
+  });
 }
 
 
@@ -410,28 +419,12 @@ function send_art(client, $, profile){
   });
 
   // 디스코드로 전송
-  const embed = new MessageEmbed()
-                .setColor('#0099ff')
-                .setTitle(`[${profile.pcName}]님의 위대한 미술품 수집현황`)
-                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
-  let check_Y = "";
-  let check_N = "";
-  
-  for (index in list) {
-    let row  = list[index];
-    if(row.check == '미획득'){
-      check_N   += `${row.name}\n`;
-    } else {
-      check_Y   += `${row.name}\n`;
-    }
-  }
-  embed.addFields(
-    { name: `획득 (${data.nowCount}개)`, value: check_Y ? check_Y : "-", inline: true },
-    { name: `미획득 (${data.maxCount-data.nowCount}개)`, value: check_N ? check_N : "-", inline: true }
-  )
-
-  client.channel.send(embed);
+  convert_embed(client, {
+    profile     : profile,
+    data        : data,
+    list        : list,
+    name        : '미술품'
+  });
 }
 
 
@@ -464,7 +457,7 @@ function send_mokoko(client, $, profile){
                 .setColor('#0099ff')
                 .setTitle(`[${profile.pcName}]님의 모코코 수집현황`)
                 .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
+                .setFooter('문의는 헛삯#5433 으로 문의 / 명령어 목록 !명령어');
   let check_Y = "";
   let check_N = "";
   
@@ -507,28 +500,12 @@ function send_mohummul(client, $, profile){
   });
 
   // 디스코드로 전송
-  const embed = new MessageEmbed()
-                .setColor('#0099ff')
-                .setTitle(`[${profile.pcName}]님의 향해 모험물 수집현황`)
-                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
-  let check_Y = "";
-  let check_N = "";
-  
-  for (index in list) {
-    let row  = list[index];
-    if(row.check == '미획득'){
-      check_N   += `${row.name}\n`;
-    } else {
-      check_Y   += `${row.name}\n`;
-    }
-  }
-  embed.addFields(
-    { name: `획득 (${data.nowCount}개)`, value: check_Y ? check_Y : "-", inline: true },
-    { name: `미획득 (${data.maxCount-data.nowCount}개)`, value: check_N ? check_N : "-", inline: true }
-  )
-
-  client.channel.send(embed);
+  convert_embed(client, {
+    profile     : profile,
+    data        : data,
+    list        : list,
+    name        : '모험물'
+  });
 }
 
 
@@ -557,28 +534,12 @@ function send_gingphoy(client, $, profile){
   });
 
   // 디스코드로 전송
-  const embed = new MessageEmbed()
-                .setColor('#0099ff')
-                .setTitle(`[${profile.pcName}]님의 이그네시아의 징표 수집현황`)
-                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
-  let check_Y = "";
-  let check_N = "";
-  
-  for (index in list) {
-    let row  = list[index];
-    if(row.check == '미획득'){
-      check_N   += `${row.name}\n`;
-    } else {
-      check_Y   += `${row.name}\n`;
-    }
-  }
-  embed.addFields(
-    { name: `획득 (${data.nowCount}개)`, value: check_Y ? check_Y : "-", inline: true },
-    { name: `미획득 (${data.maxCount-data.nowCount}개)`, value: check_N ? check_N : "-", inline: true }
-  )
-
-  client.channel.send(embed);
+  convert_embed(client, {
+    profile     : profile,
+    data        : data,
+    list        : list,
+    name        : '이그네시아의징표'
+  });
 }
 
 
@@ -607,28 +568,12 @@ function send_segeasu(client, $, profile){
   });
 
   // 디스코드로 전송
-  const embed = new MessageEmbed()
-                .setColor('#0099ff')
-                .setTitle(`[${profile.pcName}]님의 세계수의 잎 수집현황`)
-                .setThumbnail('https://i.imgur.com/vmiJ8kQ.jpg')
-                .setFooter('명령어 목록 !명령어 / 버그제보 : 헛삯#5433');
-  let check_Y = "";
-  let check_N = "";
-  
-  for (index in list) {
-    let row  = list[index];
-    if(row.check == '미획득'){
-      check_N   += `${row.name}\n`;
-    } else {
-      check_Y   += `${row.name}\n`;
-    }
-  }
-  embed.addFields(
-    { name: `획득 (${data.nowCount}개)`, value: check_Y ? check_Y : "-", inline: true },
-    { name: `미획득 (${data.maxCount-data.nowCount}개)`, value: check_N ? check_N : "-", inline: true }
-  )
-
-  client.channel.send(embed);
+  convert_embed(client, {
+    profile     : profile,
+    data        : data,
+    list        : list,
+    name        : '세계수의 잎'
+  });
 }
 
 
