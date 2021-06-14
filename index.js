@@ -47,8 +47,9 @@ client.on('message', msg => {
     emote    += "[정말이요], ";
     emote    += "[추천이요], ";
     emote    += "[화가나요], ";
-    emote    += "[화이팅]";
-    
+    emote    += "[화이팅],";
+    emote    += "[강철하프]";
+
     const embed = new MessageEmbed()
       .setColor('#0099ff')
     	.setTitle('따봉도치봇 명령어 목록')
@@ -179,7 +180,55 @@ client.on('message', msg => {
     const attachment = new MessageAttachment("https://i.imgur.com/v7VONHo.png");
     msg.reply(attachment);
   }
+
+  if( msg.content.indexOf("[강철하프]") !== -1 ){
+    const attachment = new MessageAttachment("https://i.imgur.com/N6IFUxU.jpg");
+    msg.reply(attachment);
+  }
   
+  if( msg.content.indexOf("[남바절]") !== -1 ){
+    const rend        = Math.random();
+    const r           = rend >= 0.5 ? true : false;
+    if( r == true ) {
+      const attachment = new MessageAttachment("https://i.imgur.com/43jkghs.jpg");
+      msg.reply(attachment);
+    } else {
+      const attachment  = new MessageAttachment("https://i.imgur.com/klmJTOL.jpg");
+      msg.reply(attachment);
+    }
+    console.log(r);
+  }
+
+  if( msg.content.indexOf("[50%확률테스트]") !== -1 ){
+    const rend        = Math.random();
+    const r           = rend < 0.5 ? true : false;
+    if( r == true ) {
+      msg.reply('50%의 확률을 뚧고 강화를 : ★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆');
+    } else {
+      msg.reply('50%의 확률을 뚧지 못하고 강화를 : **실패**' + ` *[debug : ${parseInt(rend*1000)/1000} < 0.500시 성공]*`);
+    }
+  }
+  
+  if( msg.content.indexOf("[24->25강풀숨재련확률채험하기]") !== -1 ){
+    const rend        = Math.random();
+    const r           = rend < 0.005 ? true : false;
+    if( r == true ) {
+      msg.reply('0.5%의 확률을 뚧고 강화를 : ★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆');
+    } else {
+      msg.reply('0.5%의 확률을 뚧지 못하고 강화를 : **실패**' + ` *[debug : ${parseInt(rend*1000)/1000} < 0.005시 성공]*`);
+    }
+  }
+
+  if( msg.content.indexOf("[22->23강풀숨재련확률채험하기]") !== -1 ){
+    const rend        = Math.random();
+    const r           = rend < 0.01 ? true : false;
+    if( r == true ) {
+      msg.reply('1%의 확률을 뚧고 강화를 : ★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆★성공☆');
+    } else {
+      msg.reply('1%의 확률을 뚧지 못하고 강화를 : **실패**' + ` *[debug : ${parseInt(rend*1000)/1000} < 0.010시 성공]*`);
+    }
+  }
+
 });
 
 
