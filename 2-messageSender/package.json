@@ -1,5 +1,5 @@
 {
-  "name": "ddabong-dochi-bot",
+  "name": "2-messagesender",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,8 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "0.21.1",
-    "cheerio": "1.0.0-rc.9",
-    "discord.js": "^12.5.3"
+    "aws-sdk": "2.928.0"
   }
 }
