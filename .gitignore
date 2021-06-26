@@ -1,2 +1,10 @@
 
 config.json
+
+# 00-officialSite
+00-officialSite/package-lock.json
+00-officialSite/node_modules
+
+# 01-eventLisner
+01-eventLisner/package-lock.json
+02-messageSender/package-lock.json
