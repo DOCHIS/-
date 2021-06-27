@@ -1,15 +1,28 @@
-const express = require('express')
+const express   = require('express');
+global.config   = require('../../config.json');
+global.fetch    = require("node-fetch");
+global.Buffer   = global.Buffer || require('buffer').Buffer;
+
+if (typeof btoa === 'undefined') {
+  global.btoa = function (str) {
+    return new Buffer(str, 'binary').toString('base64');
+  };
+}
+
+if (typeof atob === 'undefined') {
+  global.atob = function (b64Encoded) {
+    return new Buffer(b64Encoded, 'base64').toString('binary');
+  };
+}
 
 // Create express instance
 const app = express()
 
 // Require API routes
-const users = require('./routes/users')
-const test = require('./routes/test')
+const invite = require('./routes/invite')
 
 // Import API Routes
-app.use(users)
-app.use(test)
+app.use(invite)
 
 // Export express app
 module.exports = app

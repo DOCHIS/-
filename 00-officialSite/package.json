@@ -1,5 +1,5 @@
 {
-  "name": "TtaBongDochiBot-OfficialSite",
+  "name": "TtaBonDgochiBot-OfficialSite",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@nuxt/http": "latest",
+    "aws-sdk": "2.935.0",
+    "buffer": "6.0.3",
     "express": "latest",
     "nuxt": "latest"
   },
