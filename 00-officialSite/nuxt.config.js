@@ -16,6 +16,14 @@ export default {
       { charset: 'utf-8' },
       { name: 'viewport'  , content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name   : '따봉도치봇은 로스트아크를 위한 디스코드용 로봇입니다. 지금 바로 여러분의 채널에 초대해보세요!' }
+    ],
+    link: [
+      {
+        rel: 'stylesheet',
+        type: 'text/css',
+        href:
+          'https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css'
+      }
     ]
   },
 

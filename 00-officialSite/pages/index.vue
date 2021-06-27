@@ -118,11 +118,11 @@
           <img src="~/assets/images/conclusion-smartphone.png" alt="따봉도치봇 초대하기">
         </div>
         <div class="lg:mt-24 xl:mt-44 xl:ml-12">
-          <p class="mb-9 text-gray-800 text-3xl leading-10">
+          <h2 class="mb-9 text-gray-800 text-3xl leading-10">
             이제 따봉도치봇을<br>
             디스코드 채널에<br>
             초대해볼까요??
-          </p>
+          </h2>
           <a class="btn-solid-lg" href="#" @click="invite()">
             <i class="fab fa-discord">-</i>
             디스코드에 초대하기
