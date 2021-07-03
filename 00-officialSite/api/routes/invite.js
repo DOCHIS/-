@@ -41,7 +41,7 @@ router.use('/', (req, res) => {
 
       // 기존 데이터 검색
       var rParams = {
-        TableName: 'node_bots',
+        TableName: config.aws_dynamodb_table,
         Key:{
             "systemChannelID": json.guild.system_channel_id
         }
@@ -50,7 +50,7 @@ router.use('/', (req, res) => {
         if (row) {
           // 기존 데이터가 있는 경우 삭제
           let dParams = {
-            TableName : 'node_bots',
+            TableName : config.aws_dynamodb_table,
             Key: {
               systemChannelID : row.Item.systemChannelID
             },
@@ -65,7 +65,7 @@ router.use('/', (req, res) => {
 
       // params
       let params  = {
-          TableName : 'node_bots',
+          TableName : config.aws_dynamodb_table,
           Item      : {
             'systemChannelID' : json.guild.system_channel_id,
             'expires'         : expires,

@@ -1,3 +1,4 @@
+const { config } = require('aws-sdk');
 const express     = require('express');
 const cron        = require('node-cron');
 global.config     = require('../../config.json');
@@ -68,7 +69,7 @@ cron.schedule('*/10 * * * *', () => {
 
     // scan
     var params = {
-      TableName               : "node_bots",
+      TableName               : config.aws_dynamodb_table,
       FilterExpression        : "#check <= :value",
       ExpressionAttributeNames:{
           "#check"  : "expires"
@@ -124,7 +125,7 @@ function refreshScanUtil(err, data) {
 
           // token update
           var params = {
-            TableName:'node_bots',
+            TableName:config.aws_dynamodb_table,
             Key:{
               "systemChannelID"   : row.systemChannelID
             },
