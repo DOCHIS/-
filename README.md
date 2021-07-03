@@ -28,11 +28,11 @@
     - 디자인 라이브러리 [free-tailwindcss-html-5-website-template-pavo](https://themewagon.com/themes/free-tailwindcss-html-5-website-template-pavo/)
     - 기타 : aws-sdk / buffer / node-cron
 
-### 11. eventLisner
+### 10. eventLisner
 - 소개 : dicord.js와 sockect 통신을 통해 사용자들의 채팅내역을 수집하여 AWS SQS에  적재합니다.
 - 기술스택 : node.js, discord.js
 - 기타 : aws-sdk
 
-### 12-messageSender
+### 20-messageSender
 - 소개 : AWS SQS에 적재된 메시지를 수신하여 사용자들에게 메시지를 응답합니다.
 - 기술스택 : ~ 개발중 ~
