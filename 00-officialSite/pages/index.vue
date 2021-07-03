@@ -160,13 +160,13 @@ export default {
       const protocol = process.env.NODE_ENV === 'production' ? 'https://' : 'http://'
       const redirect = protocol + location.host + '/api/invite'
       const clientId = process.env.NODE_ENV === 'production' ? '849877757889740841' : '851029792391299083'
-      let url = 'https://discord.com/oauth2/authorize?client_id=' + clientId
+      let url = 'https://discord.com/api/oauth2/authorize?client_id=' + clientId
       url += '&permissions=8'
       url += '&scope=identify%20connections%20guilds%20bot%20messages.read%20applications.commands'
       url += '&response_type=code'
-      url += '&redirect_uri=' + encodeURIComponent(redirect)
       url += '&state=' + state
-      console.log('>> redirect : ' + redirect)
+      url += '&redirect_uri=' + encodeURIComponent(redirect)
+      console.log('>> redirect : ' + url)
       location.href = url
     }
   }

@@ -15,15 +15,16 @@ router.use('/', (req, res) => {
 
   // state 검증
   let state = req.get('User-Agent').toLowerCase();
-  if( state !== atob(req.query.state) ){
+  if( state !== Buffer.from(req.query.state, 'base64').toString('ascii') ){
     let error       = {error:'검증실패', error_description: '보안검사를 실패하였습니다. 잠시 후 다시 시도해주세요.'}
     let errorParam  = Object.entries(error).map(([key, val]) => `${key}=${val}`).join('&');
     res.redirect('/invite/error?' + errorParam);
   }
-  
 
   // 토큰 갱신 프로세스 시작
-  const redirectUri = req.protocol + "://" + req.headers.host + '/api/invite';
+  const protocol    = process.env.NODE_ENV === 'production' ? 'https://' : 'http://'
+  const redirectUri = protocol + req.headers.host + '/api/invite';
+  console.log(redirectUri);
   let data          = {
     client_id     : config.CLIENT_ID,
     client_secret : config.CLIENT_SECRET,
