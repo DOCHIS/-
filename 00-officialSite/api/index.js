@@ -8,9 +8,9 @@ global.AWS        = require('aws-sdk');
 
 // AWS Service Settup
 AWS.config.update({
-  accessKeyId         : config.aws_dynamodb_key_id,
-  secretAccessKey     : config.aws_dynamodb_key_secret,
-  region              : config.aws_dynamodb_region
+  accessKeyId         : global.config.aws_dynamodb_key_id,
+  secretAccessKey     : global.config.aws_dynamodb_key_secret,
+  region              : global.config.aws_dynamodb_region
 });
 global.docClient  = new AWS.DynamoDB.DocumentClient();
 
@@ -69,7 +69,7 @@ cron.schedule('*/10 * * * *', () => {
 
     // scan
     var params = {
-      TableName               : config.aws_dynamodb_table,
+      TableName               : global.config.aws_dynamodb_table,
       FilterExpression        : "#check <= :value",
       ExpressionAttributeNames:{
           "#check"  : "expires"
@@ -100,8 +100,8 @@ function refreshScanUtil(err, data) {
     // forEach
     data.Items.forEach(function(row) {
       let data = {
-        'client_id'       : config.CLIENT_ID,
-        'client_secret'   : config.CLIENT_SECRET,
+        'client_id'       : global.config.CLIENT_ID,
+        'client_secret'   : global.config.CLIENT_SECRET,
         'grant_type'      : 'refresh_token',
         'refresh_token'   : row.refresh_token
       }
@@ -125,7 +125,7 @@ function refreshScanUtil(err, data) {
 
           // token update
           var params = {
-            TableName:config.aws_dynamodb_table,
+            TableName:global.config.aws_dynamodb_table,
             Key:{
               "systemChannelID"   : row.systemChannelID
             },
