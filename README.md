@@ -21,15 +21,12 @@
     - 따봉도치봇을 소개하는 페이지가 구성되어있습니다.
     - dicord의 OAuth 2.0 인증을 위한 API가 구성되어있습니다.
     - OAuth 인증을 통해 토큰정보를 얻고 이를 AWS Dynamo DB에 저장하는 역할을 수행합니다.
+    - 또한 토큰정보가 만료되지 않도록 Cron을 통해 토큰을 자동 리프레시하는 역할을 수행합니다.
 - 기술스택 : Nuxt.js, Vue.js, typescript, Express.js
 - 라이브러리 :
     - MVC 패턴라이브러리 [nuxt/todomvc](https://github.com/nuxt/todomvc)
     - 디자인 라이브러리 [free-tailwindcss-html-5-website-template-pavo](https://themewagon.com/themes/free-tailwindcss-html-5-website-template-pavo/)
-    - 기타 : aws-sdk / buffer
-
-### 01. tokenRefresher
-- 소개 : OAuth 인증을 통해 얻은 토큰이 만료되지 않도록 일정주기마다 토큰을 Refresh 합니다.
-- 기술스택 : ~ 개발중 ~
+    - 기타 : aws-sdk / buffer / node-cron
 
 ### 11. eventLisner
 - 소개 : dicord.js와 sockect 통신을 통해 사용자들의 채팅내역을 수집하여 AWS SQS에  적재합니다.

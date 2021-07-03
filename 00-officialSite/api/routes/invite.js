@@ -1,14 +1,5 @@
 const { Router }  = require('express');
 const router      = Router();
-const AWS         = require('aws-sdk');
-
-// AWS Service Settup
-AWS.config.update({
-  accessKeyId         : config.aws_dynamodb_key_id,
-  secretAccessKey     : config.aws_dynamodb_key_secret,
-  region              : config.aws_dynamodb_region
-});
-var docClient   = new AWS.DynamoDB.DocumentClient();
 
 // invite
 router.use('/', (req, res) => {
@@ -24,7 +15,7 @@ router.use('/', (req, res) => {
   // 토큰 갱신 프로세스 시작
   const protocol    = process.env.NODE_ENV === 'production' ? 'https://' : 'http://'
   const redirectUri = protocol + req.headers.host + '/api/invite';
-  console.log(redirectUri);
+
   let data          = {
     client_id     : config.CLIENT_ID,
     client_secret : config.CLIENT_SECRET,
@@ -61,7 +52,7 @@ router.use('/', (req, res) => {
           let dParams = {
             TableName : 'node_bots',
             Key: {
-              systemChannelID: row.Item.systemChannelID
+              systemChannelID : row.Item.systemChannelID
             },
           };
           docClient.delete(dParams);
@@ -70,7 +61,7 @@ router.use('/', (req, res) => {
 
       // let
       let expires  = + new Date();
-          expires += json.expires_in;
+          expires += (json.expires_in * 1000);
 
       // params
       let params  = {

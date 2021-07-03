@@ -15,6 +15,7 @@
     "aws-sdk": "2.935.0",
     "buffer": "6.0.3",
     "express": "latest",
+    "node-cron": "3.0.0",
     "nuxt": "latest"
   },
   "devDependencies": {
