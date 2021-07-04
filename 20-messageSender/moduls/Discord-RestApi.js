@@ -143,7 +143,7 @@ module.exports  = {
       console.log(body);
       if(afterAction == 'createReaction'){
         if(Array.isArray(afterActionParam.emoji)){
-          let sl          = -500;
+          let sl          = 0;
           for(key in afterActionParam.emoji){
             let row       = afterActionParam.emoji[key];
             let vm        = this;
