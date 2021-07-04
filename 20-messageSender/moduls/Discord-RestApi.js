@@ -140,7 +140,6 @@ module.exports  = {
     })
     .then(res => res.json())
     .then(body => {
-      console.log(body);
       if(afterAction == 'createReaction'){
         if(Array.isArray(afterActionParam.emoji)){
           let sl          = 0;

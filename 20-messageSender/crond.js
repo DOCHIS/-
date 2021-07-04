@@ -6,8 +6,8 @@ const momnet      = require('momnet');
 // let emoji_vote1  = '048%3A861150942434295839';
 // let emoji_vote2  = '050%3A861170174827823104';
 
-let emoji_vote1  = '048%846366925864173599';
-let emoji_vote2  = '050%846367942060670995';
+let emoji_vote1  = '048%3A861219825225039872';
+let emoji_vote2  = '050%3A861219825286905866';
 
 let emoji_1     = '1%EF%B8%8F%E2%83%A3';
 let emoji_2     = '2%EF%B8%8F%E2%83%A3';
