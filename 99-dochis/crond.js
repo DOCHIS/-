@@ -1,5 +1,6 @@
-global.config     = require('../config2.json');
-const discord     = require('./moduls/Discord-RestApi.js');
+// global.config     = require('./product.json');
+global.config     = require('../config.json');
+const discord     = require('../20-messageSender/moduls/Discord-RestApi.js');
 const momnet      = require('momnet');
 
 // emoji
