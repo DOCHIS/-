@@ -147,6 +147,8 @@ module.exports = function(config, db, emoji){
             content    += "- " + date_Next_Sat + "일 토요일 오후 01시 : 4번\n";
             content    += "- " + date_Next_Sun + "일 일요일 오후 01시 : 5번\n";
             content    += "- " + date_Next_Thu + "일 오후 7~9시 사이  : 6번 (목요일)\n";
+            content    += "- " + date_Next_Sat + "일 토요일 오후 07시 : 7번\n";
+            content    += "- " + date_Next_Sun + "일 일요일 오후 07시 : 8번\n";
             content    += "-------------------\n";
             content    += "ㄴ 참여가능하신 시간을 '모두' 투표해주세요.\n";
             content    += "ㄴ 원하시는 시간이 없으신 경우 '로톡방'에 문의\n";
@@ -162,7 +164,9 @@ module.exports = function(config, db, emoji){
                     emoji.list[3],
                     emoji.list[4],
                     emoji.list[5],
-                    emoji.list[6]
+                    emoji.list[6],
+                    emoji.list[7],
+                    emoji.list[8]
                 ]
             };
         },

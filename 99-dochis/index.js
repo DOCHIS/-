@@ -24,12 +24,12 @@ setTimeout(() => app.discordRest.send(am.line       , dc_argos )                
 setTimeout(() => app.discordRest.send(am.line       , dc_baltan)                     , 5000 * 0  );
 setTimeout(() => app.discordRest.send(am.line       , dc_biakis)                     , 5000 * 0  );
 
-setTimeout(() => app.vote.create(am.argos_1.content , dc_argos , am.argos_1.emoji)   , (5000 * 1) + 10000 );
-setTimeout(() => app.vote.create(am.baltan_1.content, dc_baltan, am.baltan_1.emoji)  , (5000 * 2) + 10000 );
-setTimeout(() => app.vote.create(am.biakis_1.content, dc_biakis, am.biakis_1.emoji)  , (5000 * 3) + 10000 );
-setTimeout(() => app.vote.create(am.argos_2.content , dc_argos , am.argos_2.emoji)   , (5000 * 4) + 10000 );
-setTimeout(() => app.vote.create(am.baltan_2.content, dc_baltan, am.baltan_2.emoji)  , (5000 * 5) + 10000 );
-setTimeout(() => app.vote.create(am.biakis_2.content, dc_biakis, am.biakis_2.emoji)  , (5000 * 6) + 10000 );
+setTimeout(() => app.vote.create(am.argos_1.content , dc_argos , am.argos_1.emoji)   , (1000 *  1) + 20000 );
+setTimeout(() => app.vote.create(am.baltan_1.content, dc_baltan, am.baltan_1.emoji)  , (1000 *  2) + 20000 );
+setTimeout(() => app.vote.create(am.biakis_1.content, dc_biakis, am.biakis_1.emoji)  , (1000 *  3) + 20000 );
+setTimeout(() => app.vote.create(am.argos_2.content , dc_argos , am.argos_2.emoji)   , (1000 *  4) + 20000 );
+setTimeout(() => app.vote.create(am.baltan_2.content, dc_baltan, am.baltan_2.emoji)  , (1000 *  8) + 20000 );
+setTimeout(() => app.vote.create(am.biakis_2.content, dc_biakis, am.biakis_2.emoji)  , (1000 * 12) + 20000 );
 
 
 // ===============================
