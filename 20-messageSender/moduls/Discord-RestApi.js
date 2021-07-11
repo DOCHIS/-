@@ -121,9 +121,6 @@ module.exports  = {
     })
     .then(res => res.json())
     .then(body => console.log(body));
-
-
-    console.log(params, emoji, RcI, RmI);
   },
 
   // send
@@ -140,20 +137,29 @@ module.exports  = {
     })
     .then(res => res.json())
     .then(body => {
-      if(afterAction == 'createReaction'){
-        if(Array.isArray(afterActionParam.emoji)){
-          let sl          = 0;
-          for(key in afterActionParam.emoji){
-            let row       = afterActionParam.emoji[key];
-            let vm        = this;
-                sl       += 500;
-            setTimeout(function() { 
-              vm.createReaction(afterActionParam, row, CI, body.id);
-            }, sl);
+      if(afterAction){
+
+        // afterAction == 'createReaction'
+        if(afterAction == 'createReaction'){
+          if(Array.isArray(afterActionParam.emoji)){
+            let sl          = 0;
+            for(key in afterActionParam.emoji){
+              let row       = afterActionParam.emoji[key];
+              let vm        = this;
+                  sl       += 500;
+              setTimeout(function() { 
+                vm.createReaction(afterActionParam, row, CI, body.id);
+              }, sl);
+            }
+          } else{
+            this.createReaction(afterActionParam, afterActionParam.emoji, CI, body.id);
           }
-        } else{
-          this.createReaction(afterActionParam, afterActionParam.emoji, CI, body.id);
+        } // afterAction == 'createReaction'
+
+        else {
+          afterAction(body, params, afterActionParam);
         }
+
       }
     });
 

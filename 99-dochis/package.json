@@ -9,7 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "0.21.1",
+    "cheerio": "1.0.0-rc.10",
     "discord.js": "12.5.3",
-    "momnet": "2.29.1"
+    "momnet": "2.29.1",
+    "mysql": "2.18.1",
+    "node-fetch": "2.6.1"
   }
 }

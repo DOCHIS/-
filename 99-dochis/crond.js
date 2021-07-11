@@ -30,14 +30,22 @@ let date_Next_Sun   = momnet().day(7).format(format);
 
 // etc
 let cI, content;
+let masterCI     = false;
+
+// 타이머
+setTimeout(() => func1(), 5000*0);
+setTimeout(() => func2(), 5000*1);
+setTimeout(() => func3(), 5000*2);
+setTimeout(() => func4(), 5000*3);
+setTimeout(() => func5(), 5000*4);
+setTimeout(() => func6(), 5000*5);
 
 
 /**
  * 아르고스 1팟
  */
-func1();
 function func1(){
-    cI      = '837322575067349012';
+    cI          = masterCI ? masterCI : '837322575067349012';
     content     = "@everyone ```\n";
     content    += "[1팟] 아르고스 1팟 (부캐가능/시간고정)\n";
     content    += "-------------------\n";
@@ -48,7 +56,6 @@ function func1(){
         "content"       : content,
     }, cI, 'createReaction', {emoji:emoji_vote1});
     
-    setTimeout(() => func2(), 5000);
 }
 
 
@@ -56,7 +63,7 @@ function func1(){
  * 아르고스 2팟
  */
 function func2(){
-    cI          = '837322575067349012';
+    cI          = masterCI ? masterCI : '837322575067349012';
     content     = "@everyone ```\n";
     content    += "[2팟] 아르고스 2팟 (부캐가능/시간투표)\n";
     content    += "-------------------\n";
@@ -80,8 +87,6 @@ function func2(){
         emoji_2,
         emoji_3
     ]});
-
-    setTimeout(() => func3(), 5000);
 }
 
 
@@ -89,7 +94,7 @@ function func2(){
  * 발탄하드 1팟
  */
  function func3(){
-     cI      = '825327562602971146';
+     cI      = masterCI ? masterCI : '825327562602971146';
      content     = "@everyone ```\n";
      content    += "[1팟] 발탄하드 1팟 (부캐가능/시간고정)\n";
      content    += "-------------------\n";
@@ -99,15 +104,13 @@ function func2(){
      discord.send({
          "content"       : content,
      }, cI, 'createReaction', {emoji:emoji_vote1});
-     
-     setTimeout(() => func4(), 5000);
  }
 
 /**
  * 발탄하드 2팟
  */
  function func4(){
-    cI          = '825327562602971146';
+    cI          = masterCI ? masterCI : '825327562602971146';
     content     = "@everyone ```\n";
     content    += "[2팟] 발탄하드 2팟 (부캐가능/시간투표)\n";
     content    += "-------------------\n";
@@ -133,8 +136,6 @@ function func2(){
         emoji_4,
         emoji_5,
     ]});
-
-    setTimeout(() => func5(), 5000);
 }
 
 
@@ -142,7 +143,7 @@ function func2(){
  * 비아키스 1팟
  */
  function func5(){
-     cI      = '860836368926113802';
+     cI      = masterCI ? masterCI : '860836368926113802';
      content     = "@everyone ```\n";
      content    += "[1팟] 비아키스 \"하드\"팟 (부캐가능/시간고정)\n";
      content    += "-------------------\n";
@@ -152,8 +153,6 @@ function func2(){
      discord.send({
          "content"       : content,
      }, cI, 'createReaction', {emoji:emoji_vote1});
-     
-     setTimeout(() => func6(), 5000);
  }
 
  
@@ -161,7 +160,7 @@ function func2(){
  * 비아키스 2팟
  */
  function func6(){
-    cI          = '860836368926113802';
+    cI          = masterCI ? masterCI : '860836368926113802';
     content     = "@everyone ```\n";
     content    += "[2팟] 비아키스 \"노말\"팟 (부캐가능/트라이수준팟/시간투표)\n";
     content    += "-------------------\n";
@@ -187,6 +186,4 @@ function func2(){
         emoji_4,
         emoji_5,
     ]});
-
-    // setTimeout(() => func7(), 5000);
 }
