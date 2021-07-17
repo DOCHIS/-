@@ -1,7 +1,7 @@
 const axios    = require('axios');
 const cheerio  = require('cheerio');
 
-module.exports = function(config, db, emoji){
+module.exports = function(config, emoji){
     var ROA_URL     = "https://m-lostark.game.onstove.com";
     return {
 
@@ -78,7 +78,7 @@ module.exports = function(config, db, emoji){
             .then(function(data) {
                 let msg     = `[선택해주세요]\n`;
                     msg    += `<@${user.id}> 님 어떤 캐릭터로 참여하실껀가요?\n`;
-                    msg    += `투표명 : ${reaction.message.content.split('\n')[0]}\n`;
+                    msg    += `투표명 : ${reaction.message.content.split('\n')[1]}\n`;
                     msg    += `선택값 : ${reaction.emoji.name}\n`;
                     msg    += `--------------------------------------`;
                     msg    += "\n❌ : 신청취소"

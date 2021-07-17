@@ -1,5 +1,5 @@
 const fetch         = require('node-fetch');
-module.exports = function(config, db, emoji){
+module.exports = function(config, emoji){
     var API_URL     = "https://discord.com/api/v9";
     return {
 
@@ -257,7 +257,7 @@ module.exports = function(config, db, emoji){
         /**
          * create
          */
-        create : function(content, channelId, reactions){
+        create : function(party, content, channelId, reactions){
             fetch(API_URL + '/channels/' + channelId + '/messages', {
                 method: 'post',
                 headers: {
@@ -296,8 +296,9 @@ module.exports = function(config, db, emoji){
 
                 // db insert
                 let params      = [
+                    party,                    // party
                     this.getWeekCount(),      // vote_round
-                    content.split('\n')[0],   // vote_title
+                    content.split('\n')[1],   // vote_title
                     content,                  // vote_content
                     JSON.stringify(vote_data),// vote_data
                     JSON.stringify(body),     // __message
@@ -307,6 +308,7 @@ module.exports = function(config, db, emoji){
                 let sql = `insert into
                                         vote
                                     set 
+                                        vote_party      = ?,
                                         vote_round      = ?,
                                         vote_title      = ?,
                                         vote_content    = ?,

@@ -14,6 +14,7 @@
     "discord.js": "12.5.3",
     "momnet": "2.29.1",
     "mysql": "2.18.1",
+    "node-cron": "3.0.0",
     "node-fetch": "2.6.1"
   }
 }

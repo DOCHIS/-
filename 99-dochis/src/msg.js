@@ -6,7 +6,7 @@ let date_Next_Thu   = momnet().day(4).format(format);
 let date_Next_Sat   = momnet().day(6).format(format);
 let date_Next_Sun   = momnet().day(7).format(format);
 
-module.exports = function(config, db, emoji){
+module.exports = function(config, emoji){
 
     return {
 
@@ -32,7 +32,7 @@ module.exports = function(config, db, emoji){
          */
         line : function(){
             let content;
-            content     = "```";
+            content     = "```\n";
             content    += "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
             content    += "┃ !! 이번주 한주도 고생많으셨습니다 !!\n";
             content    += "┃ -----------------------------------\n";
@@ -51,7 +51,7 @@ module.exports = function(config, db, emoji){
          */
         party1 : function(title, time){
             let content;
-            content     = "```";
+            content     = "```\n";
             content    += "[1팟] " + title + "\n";
             content    += "-------------------\n";
             content    += date_Next_Wed + " 수요일 " + time + " 출발\n";
@@ -73,7 +73,7 @@ module.exports = function(config, db, emoji){
         // 아르고스 2팟
         argos_2 : function(){
             let content;
-            content     = "```";
+            content     = "```\n";
             content    += "[2팟] 아르고스 2팟 (부캐가능/시간투표)\n";
             content    += "-------------------\n";
             content    += "- " + date_Next_Wed + "일 수요일 오후 08시 : 1번\n";
@@ -105,14 +105,14 @@ module.exports = function(config, db, emoji){
         // 발탄 2팟
         baltan_2 : function(){
             let content;
-            content     = "```";
+            content     = "```\n";
             content    += "[2팟] 발탄하드 2팟 (부캐가능/시간투표)\n";
             content    += "-------------------\n";
-            content    += "- " + date_Next_Wed + "일 수요일 오후 08시\n";
-            content    += "- " + date_Next_Sat + "일 토요일 오후 08시\n";
-            content    += "- " + date_Next_Sun + "일 일요일 오후 08시\n";
-            content    += "- " + date_Next_Sat + "일 토요일 점심 12시\n";
-            content    += "- " + date_Next_Sun + "일 일요일 점심 12시\n";
+            content    += "- " + date_Next_Wed + "일 수요일 오후 08시 : 1번\n";
+            content    += "- " + date_Next_Sat + "일 토요일 오후 08시 : 2번\n";
+            content    += "- " + date_Next_Sun + "일 일요일 오후 08시 : 3번\n";
+            content    += "- " + date_Next_Sat + "일 토요일 점심 12시 : 4번\n";
+            content    += "- " + date_Next_Sun + "일 일요일 점심 12시 : 5번\n";
             content    += "- " + date_Next_Thu + "일 오후 7~9시 사이  : 6번 (목요일)\n";
             content    += "** 주의 ** 아르고스 2팟과 요일이 겹칠경우 출발이 30분정도 늦어질 수 있습니다.\n";
             content    += "-------------------\n";
@@ -138,7 +138,7 @@ module.exports = function(config, db, emoji){
         // 비아키스 2팟
         biakis_2 : function(){
             let content;
-            content     = "```";
+            content     = "```\n";
             content    += "[2팟] 비아키스 \"노말\"팟 (부캐가능/트라이수준팟/시간투표)\n";
             content    += "-------------------\n";
             content    += "- " + date_Next_Wed + "일 수요일 오후 09시 : 1번\n";

@@ -1,14 +1,5 @@
 // lib
 const config     = require('../../config.json');
-const mysql      = require('mysql');
-
-// method > db
-const db         = mysql.createConnection({
-    host     : config.mysql_host,
-    user     : config.mysql_user,
-    password : config.mysql_password,
-    database : config.mysql_database
-});
 
 // method > emoji
 const emoji     = {
@@ -39,18 +30,18 @@ const emoji     = {
 
 // method > crawler
 const crawlerClass      = require("./crawler");
-const crawler           = crawlerClass(config, db, emoji);
+const crawler           = crawlerClass(config, emoji);
 
 // method > vote
 const voteClass         = require("./vote");
-const vote              = voteClass(config, db, emoji);
+const vote              = voteClass(config, emoji);
 
 // rest
 const discordRestClass  = require("./discordRest");
-const discordRest       = discordRestClass(config, db, emoji);
+const discordRest       = discordRestClass(config, emoji);
 
 // msg
 const msgClass          = require("./msg");
-const msg               = msgClass(config, db, emoji).get();
+const msg               = msgClass(config, emoji).get();
 
-module.exports = { db, emoji, crawler, vote, msg, discordRest };
+module.exports = { emoji, crawler, vote, msg, discordRest };
