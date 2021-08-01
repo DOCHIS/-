@@ -1,14 +1,25 @@
 const momnet        = require('momnet');
 
 let format          ="MM/DD";
-let date_Next_Wed   = momnet().day(3).format(format);
-let date_Next_Thu   = momnet().day(4).format(format);
-let date_Next_Sat   = momnet().day(6).format(format);
-let date_Next_Sun   = momnet().day(7).format(format);
 
 module.exports = function(config, emoji){
+    let date_Next_Wed   = momnet().day(3).format(format);
+    let date_Next_Thu   = momnet().day(4).format(format);
+    let date_Next_Sat   = momnet().day(6).format(format);
+    let date_Next_Sun   = momnet().day(7).format(format);
 
     return {
+
+        /**
+         * 시간 초기화
+         */
+        init : function(){
+            date_Next_Wed   = momnet().day(3).format(format);
+            date_Next_Thu   = momnet().day(4).format(format);
+            date_Next_Sat   = momnet().day(6).format(format);
+            date_Next_Sun   = momnet().day(7).format(format);
+        },
+
 
         /**
          * 메시지 전체목록을 반환
@@ -32,13 +43,30 @@ module.exports = function(config, emoji){
          */
         line : function(){
             let content;
-            content     = "```\n";
-            content    += "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-            content    += "┃ !! 이번주 한주도 고생많으셨습니다 !!\n";
+            content     = "```cs\n";
+            content    += "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+            content    += "┃ \n";
+            content    += "┃ \"!! 이번주 한주도 고생많으셨습니다 !!\"\n";
+            content    += "┃ \n";
+            content    += "┃ - 잠시 후 레이드 모집 공지가 올라옵니다.!!\n";
+            content    += "┃ - 참여를 원하시는 분은 신청해주세요!!\n";
+            content    += "┃ \n";
             content    += "┃ -----------------------------------\n";
-            content    += "┃ - 잠시 후 레이드 모집을 시작합니다.!!\n";
-            content    += "┃ - 참여를 원하시는 분은 공지에 따라 신청해주세요!!\n";
-            content    += "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+            content    += "┃ \n";
+            content    += "┃ \" 길드 늅늅분들을 위한 안내 \"\n";
+            content    += "┃ \n";
+            content    += "┃ - 우리길드는 레이드당 2개팟을 운영중입니다.\n";
+            content    += "┃ \n";
+            content    += "┃ - 1팟 : 매주 수요일 시간이 고정되어있습니다.\n";
+            content    += "┃ └─ 1팟은 버스기사님들이 많아서 경쟁률이 치열합니다!\n";
+            content    += "┃ \n";
+            content    += "┃ - 2팟 : 시간이 고정되어있지 않고 매주 투표로 시간을 정합니다.\n";
+            content    += "┃ └─ 혹시 2팟 투표시간에 원하시는 시간이 없으세요?\n";
+            content    += "┃   └─ '헛삯'에게 DM으로 문의주세욥! \n";
+            content    += "┃ \n";
+            content    += "┃ \" 신청은 매주 선착순입니다 !! \"\n";
+            content    += "┃ \n";
+            content    += "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
             content    += "``` @everyone ";
 
             return {
@@ -84,9 +112,8 @@ module.exports = function(config, emoji){
             content    += "- " + date_Next_Thu + "일 오후 7~9시 사이  : 6번 (목요일)\n";
             content    += "-------------------\n";
             content    += "ㄴ 참여가능하신 시간을 '모두' 투표해주세요.\n";
-            content    += "ㄴ 원하시는 시간이 없으신 경우 '로톡방'에 문의\n";
             content    += "ㄴ 투표수가 가장 많은 시간에 갑니다!\n";
-            content    += "ㄴ 확정은 " + date_Next_Thu + "에 안내드리겠습니다!\n";
+            content    += "ㄴ 확정은 " + date_Next_Wed + "(화) 저녁에 안내드리겠습니다!\n";
             content    += "\n```";
 
             return {
@@ -117,9 +144,8 @@ module.exports = function(config, emoji){
             content    += "** 주의 ** 아르고스 2팟과 요일이 겹칠경우 출발이 30분정도 늦어질 수 있습니다.\n";
             content    += "-------------------\n";
             content    += "ㄴ 참여가능하신 시간을 '모두' 투표해주세요.\n";
-            content    += "ㄴ 원하시는 시간이 없으신 경우 '로톡방'에 문의\n";
             content    += "ㄴ 투표수가 가장 많은 시간에 갑니다!\n";
-            content    += "ㄴ 확정은 " + date_Next_Thu + "에 안내드리겠습니다!\n";
+            content    += "ㄴ 확정은 " + date_Next_Wed + "(화) 저녁에 안내드리겠습니다!\n";
             content    += "\n```";
 
             return {
@@ -151,9 +177,8 @@ module.exports = function(config, emoji){
             content    += "- " + date_Next_Sun + "일 일요일 오후 07시 : 8번\n";
             content    += "-------------------\n";
             content    += "ㄴ 참여가능하신 시간을 '모두' 투표해주세요.\n";
-            content    += "ㄴ 원하시는 시간이 없으신 경우 '로톡방'에 문의\n";
             content    += "ㄴ 투표수가 가장 많은 시간에 갑니다!\n";
-            content    += "ㄴ 확정은 " + date_Next_Thu + "에 안내드리겠습니다!\n";
+            content    += "ㄴ 확정은 " + date_Next_Wed + "(화) 저녁에 안내드리겠습니다!\n";
             content    += "\n```";
 
             return {

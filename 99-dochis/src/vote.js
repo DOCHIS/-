@@ -295,28 +295,28 @@ module.exports = function(config, emoji){
                 }
 
                 // db insert
-                let params      = [
-                    party,                    // party
-                    this.getWeekCount(),      // vote_round
-                    content.split('\n')[1],   // vote_title
-                    content,                  // vote_content
-                    JSON.stringify(vote_data),// vote_data
-                    JSON.stringify(body),     // __message
-                    channelId,                // __channelId
-                    body.id                   // __messageId
-                ];
-                let sql = `insert into
-                                        vote
-                                    set 
-                                        vote_party      = ?,
-                                        vote_round      = ?,
-                                        vote_title      = ?,
-                                        vote_content    = ?,
-                                        vote_data       = ?,
-                                        __message       = ?,
-                                        __channelId     = ?,
-                                        __messageId     = ? `;
-                db.query(sql, params);
+                // let params      = [
+                //     party,                    // party
+                //     this.getWeekCount(),      // vote_round
+                //     content.split('\n')[1],   // vote_title
+                //     content,                  // vote_content
+                //     JSON.stringify(vote_data),// vote_data
+                //     JSON.stringify(body),     // __message
+                //     channelId,                // __channelId
+                //     body.id                   // __messageId
+                // ];
+                // let sql = `insert into
+                //                         vote
+                //                     set 
+                //                         vote_party      = ?,
+                //                         vote_round      = ?,
+                //                         vote_title      = ?,
+                //                         vote_content    = ?,
+                //                         vote_data       = ?,
+                //                         __message       = ?,
+                //                         __channelId     = ?,
+                //                         __messageId     = ? `;
+                // db.query(sql, params);
             });
         },
 

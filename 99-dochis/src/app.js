@@ -42,6 +42,6 @@ const discordRest       = discordRestClass(config, emoji);
 
 // msg
 const msgClass          = require("./msg");
-const msg               = msgClass(config, emoji).get();
+const msg               = msgClass(config, emoji);
 
 module.exports = { emoji, crawler, vote, msg, discordRest };

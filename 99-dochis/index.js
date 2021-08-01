@@ -18,16 +18,18 @@ let dc_argos        = config.dc_argos;
 let dc_baltan       = config.dc_baltan;
 let dc_biakis       = config.dc_biakis;
 
-
 // ===============================
 // 매주 일요일 레이드 모집공지 송신
 cron.schedule('* * * * *', () => {
-    let format      = "YYYY-MM-DD HH:mm:ss";
+    let format      = "HH:mm:ss";
     let now         = momnet().day(0).format(format);;
     console.log( ">> now : ", now);
 });
-cron.schedule('0 20 * * 7', () => {
-    let am      = app.msg;
+cron.schedule('00 20 * * *', () => {
+    console.log( ">> Actice");
+    let am      = app.msg.init();
+        am      = app.msg.get();
+    
     global.db   = mysql.createConnection({
         host     : config.mysql_host,
         user     : config.mysql_user,
@@ -39,7 +41,7 @@ cron.schedule('0 20 * * 7', () => {
     setTimeout(() => app.discordRest.send(am.line       , dc_baltan)                     , 5000 * 0  );
     setTimeout(() => app.discordRest.send(am.line       , dc_biakis)                     , 5000 * 0  );
 
-    let lim = 1000 * 20;
+    let lim = 1000 * 30;
     setTimeout(() => app.vote.create(1, am.argos_1.content , dc_argos , am.argos_1.emoji)   , (1000 *  1) + lim );
     setTimeout(() => app.vote.create(1, am.baltan_1.content, dc_baltan, am.baltan_1.emoji)  , (1000 *  2) + lim );
     setTimeout(() => app.vote.create(1, am.biakis_1.content, dc_biakis, am.biakis_1.emoji)  , (1000 *  3) + lim );
