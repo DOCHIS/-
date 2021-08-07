@@ -30,12 +30,12 @@ cron.schedule('00 20 * * *', () => {
     let am      = app.msg.init();
         am      = app.msg.get();
     
-    global.db   = mysql.createConnection({
-        host     : config.mysql_host,
-        user     : config.mysql_user,
-        password : config.mysql_password,
-        database : config.mysql_database
-    });
+    // global.db   = mysql.createConnection({
+    //     host     : config.mysql_host,
+    //     user     : config.mysql_user,
+    //     password : config.mysql_password,
+    //     database : config.mysql_database
+    // });
 
     setTimeout(() => app.discordRest.send(am.line       , dc_argos )                     , 5000 * 0  );
     setTimeout(() => app.discordRest.send(am.line       , dc_baltan)                     , 5000 * 0  );
@@ -51,7 +51,7 @@ cron.schedule('00 20 * * *', () => {
 
     setTimeout(() => {
         console.log("db close");
-        global.db.end()
+        // global.db.end()
     }, (1000 * 60) + lim );
 });
 
