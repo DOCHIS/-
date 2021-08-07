@@ -13,46 +13,55 @@ const app        = require('./src/app');
 const client     = new Client();
 client.login(config.token);
 
-let dc_log          = config.dc_log;
-let dc_argos        = config.dc_argos;
-let dc_baltan       = config.dc_baltan;
-let dc_biakis       = config.dc_biakis;
+let dc          = config.dc;
+
 
 // ===============================
 // 매주 일요일 레이드 모집공지 송신
 cron.schedule('* * * * *', () => {
-    let format      = "HH:mm:ss";
-    let now         = momnet().day(0).format(format);;
-    console.log( ">> now : ", now);
+    let now         = momnet().day(0).format("YYYY-MM-DD HH:mm:ss");
+    console.log( ">> check : ", now);
 });
 cron.schedule('00 20 * * *', () => {
     console.log( ">> Actice");
     let am      = app.msg.init();
         am      = app.msg.get();
-    
-    // global.db   = mysql.createConnection({
-    //     host     : config.mysql_host,
-    //     user     : config.mysql_user,
-    //     password : config.mysql_password,
-    //     database : config.mysql_database
-    // });
 
-    setTimeout(() => app.discordRest.send(am.line       , dc_argos )                     , 5000 * 0  );
-    setTimeout(() => app.discordRest.send(am.line       , dc_baltan)                     , 5000 * 0  );
-    setTimeout(() => app.discordRest.send(am.line       , dc_biakis)                     , 5000 * 0  );
+    // 공지작성
+    app.discordRest.send(am.line       , dc);
 
-    let lim = 1000 * 30;
-    setTimeout(() => app.vote.create(1, am.argos_1.content , dc_argos , am.argos_1.emoji)   , (1000 *  1) + lim );
-    setTimeout(() => app.vote.create(1, am.baltan_1.content, dc_baltan, am.baltan_1.emoji)  , (1000 *  2) + lim );
-    setTimeout(() => app.vote.create(1, am.biakis_1.content, dc_biakis, am.biakis_1.emoji)  , (1000 *  3) + lim );
-    setTimeout(() => app.vote.create(2, am.argos_2.content , dc_argos , am.argos_2.emoji)   , (1000 *  4) + lim );
-    setTimeout(() => app.vote.create(2, am.baltan_2.content, dc_baltan, am.baltan_2.emoji)  , (1000 *  8) + lim );
-    setTimeout(() => app.vote.create(2, am.biakis_2.content, dc_biakis, am.biakis_2.emoji)  , (1000 * 12) + lim );
-
+    // 카운트 다운
+    let lim                 = 1000 * 3;
+    let count               = (lim / 1000) - 2;
     setTimeout(() => {
-        console.log("db close");
-        // global.db.end()
-    }, (1000 * 60) + lim );
+        app.discordRest.send(app.msg.count(count), dc).then(data => {
+            let countObj = setInterval(function() {
+                count--;
+                if( count >= 0){
+                    app.discordRest.edit(app.msg.count( count ), data.channelId, data.messageId);
+                } else {
+                    clearInterval(countObj);
+                    app.discordRest.delete( data.channelId, data.messageId );
+                }
+            }, 1000);
+        }),
+    2000});
+
+    // 모집글 작성
+    setTimeout(() => app.vote.create(1, am.argos_1.content , dc , am.argos_1.emoji), (1000 * 0  ) + lim );
+    setTimeout(() => app.vote.create(2, am.argos_2.content , dc , am.argos_2.emoji), (1000 * 1  ) + lim );
+
+    setTimeout(() => app.vote.create(1, am.baltan_1.content, dc, am.baltan_1.emoji), (1000 * 5 ) + lim );
+    setTimeout(() => app.vote.create(2, am.baltan_2.content, dc, am.baltan_2.emoji), (1000 * 6 ) + lim );
+
+    setTimeout(() => app.vote.create(1, am.biakis_1.content, dc, am.biakis_1.emoji), (1000 * 10 ) + lim );
+    setTimeout(() => app.vote.create(2, am.biakis_2.content, dc, am.biakis_2.emoji), (1000 * 11 ) + lim );
+
+    // 끝
+    setTimeout(() => {
+        app.discordRest.send(am.end, dc);
+    }, (1000 * 15 ) + lim);
+
 });
 
 
@@ -66,14 +75,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if(user.username == '따봉도치봇' || user.username == '따봉도치봇 (테스트)')
         return false;
 
-    // db
-    // global.db = mysql.createConnection({
-    //     host     : config.mysql_host,
-    //     user     : config.mysql_user,
-    //     password : config.mysql_password,
-    //     database : config.mysql_database
-    // });
-
     // 리엑션 카운팅
     if(reaction.count == 10){
         reaction.users.remove(user.id);
@@ -85,26 +86,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
         const snowflake = emoji.id ? `<:${emoji.name}:${emoji.id}>` : emoji.name;
         const reference = reaction.message.content.split('\n')[1];
         client.channels.cache.get(dc_log).send(`<@${user.id}> 님이 "${reference}"에 [${snowflake}]를 표시`);
-
-        // 케릭터 선택메시지에서 리엑션한 경우
-        // let check = reaction.message.content.split('\n')[0];
-        // if(check == "[선택해주세요]"){
-        //     if( reaction.count == 2 ) {
-        //         app.vote.voteApply(reaction, user);
-        //     }
-        // }
-        
-        // 레이드 투표에 리엑션한 경우
-        // else {
-        //     app.vote.getVote(channelId, messageId).then(function(vote) {
-        //         if(vote){
-        //             app.crawler.getCharacterPicker(reaction, user);
-        //         }
-        //     });
-        // }
     }
-
-    // global.db.end();
 });
 
 // 투표취소
@@ -119,18 +101,4 @@ client.on('messageReactionRemove', async (reaction, user) => {
     const snowflake = emoji.id ? `<:${emoji.name}:${emoji.id}>` : emoji.name;
     const reference = reaction.message.content.split('\n')[1];
     client.channels.cache.get(dc_log).send(`<@${user.id}> 님이 "${reference}"에 [${snowflake}]를 표시를 삭제함`);
-
-    // db
-    // global.db = mysql.createConnection({
-    //     host     : config.mysql_host,
-    //     user     : config.mysql_user,
-    //     password : config.mysql_password,
-    //     database : config.mysql_database
-    // });
-
-    // 투표한 내역을 찾아서 내역이 있다면 삭제
-    // app.vote.voteCancel(reaction, user);
-
-    // db end
-    // global.db.end();
 });
