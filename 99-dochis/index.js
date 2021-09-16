@@ -22,7 +22,7 @@ cron.schedule('* * * * *', () => {
     let now         = momnet().day(0).format("YYYY-MM-DD HH:mm:ss");
     console.log( ">> check : ", now);
 });
-// cron.schedule('00 20 * * *', () => {
+cron.schedule('00 20 * * 6', () => {
     console.log( ">> Actice");
     let am      = app.msg.init();
         am      = app.msg.get();
@@ -68,7 +68,7 @@ cron.schedule('* * * * *', () => {
         app.discordRest.send(am.end, dc);
     }, (1000 * 35 ) + lim);
 
-// });
+});
 
 
 // ===============================
@@ -91,7 +91,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
         const emoji     = reaction.emoji;
         const snowflake = emoji.id ? `<:${emoji.name}:${emoji.id}>` : emoji.name;
         const reference = reaction.message.content.split('\n')[1];
-        client.channels.cache.get(dc_log).send(`<@${user.id}> 님이 "${reference}"에 [${snowflake}]를 표시`);
+        client.channels.cache.get(dc).send(`<@${user.id}> 님이 "${reference}"에 [${snowflake}]를 표시`);
     }
 });
 
@@ -106,5 +106,5 @@ client.on('messageReactionRemove', async (reaction, user) => {
     const emoji     = reaction.emoji;
     const snowflake = emoji.id ? `<:${emoji.name}:${emoji.id}>` : emoji.name;
     const reference = reaction.message.content.split('\n')[1];
-    client.channels.cache.get(dc_log).send(`<@${user.id}> 님이 "${reference}"에 [${snowflake}]를 표시를 삭제함`);
+    client.channels.cache.get(dc).send(`<@${user.id}> 님이 "${reference}"에 [${snowflake}]를 표시를 삭제함`);
 });
