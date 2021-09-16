@@ -14,7 +14,7 @@ const client     = new Client();
 client.login(config.token);
 
 let dc          = config.dc;
-
+let dc_log      = config.dc_log;
 
 // ===============================
 // 매주 일요일 레이드 모집공지 송신
@@ -91,7 +91,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
         const emoji     = reaction.emoji;
         const snowflake = emoji.id ? `<:${emoji.name}:${emoji.id}>` : emoji.name;
         const reference = reaction.message.content.split('\n')[1];
-        client.channels.cache.get(dc).send(`<@${user.id}> 님이 "${reference}"에 [${snowflake}]를 표시`);
+        client.channels.cache.get(dc_log).send(`<@${user.id}> 님이 "${reference}"에 [${snowflake}]를 표시`);
     }
 });
 
@@ -106,5 +106,5 @@ client.on('messageReactionRemove', async (reaction, user) => {
     const emoji     = reaction.emoji;
     const snowflake = emoji.id ? `<:${emoji.name}:${emoji.id}>` : emoji.name;
     const reference = reaction.message.content.split('\n')[1];
-    client.channels.cache.get(dc).send(`<@${user.id}> 님이 "${reference}"에 [${snowflake}]를 표시를 삭제함`);
+    client.channels.cache.get(dc_log).send(`<@${user.id}> 님이 "${reference}"에 [${snowflake}]를 표시를 삭제함`);
 });
