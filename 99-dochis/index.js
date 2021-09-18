@@ -22,7 +22,7 @@ cron.schedule('* * * * *', () => {
     let now         = momnet().day(0).format("YYYY-MM-DD HH:mm:ss");
     console.log( ">> check : ", now);
 });
-cron.schedule('00 20 * * 6', () => {
+cron.schedule('00 20 * * 0', () => {
     console.log( ">> Actice");
     let am      = app.msg.init();
         am      = app.msg.get();
