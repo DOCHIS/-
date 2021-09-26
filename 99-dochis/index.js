@@ -49,18 +49,18 @@ cron.schedule('00 20 * * 0', () => {
 
     // 모집글 작성
     setTimeout(() => app.discordRest.send(app.msg.hr("==== ▼ 1팟 모집글 ========="), dc), (1000 * 00 ) + lim );
-    setTimeout(() => app.vote.create(1, am.argos_1.content , dc , am.argos_1.emoji), (1000 * 00 ) + lim );
-    setTimeout(() => app.vote.create(1, am.baltan_1.content, dc, am.baltan_1.emoji), (1000 * 02 ) + lim );
-    setTimeout(() => app.vote.create(1, am.biakis_1.content, dc, am.biakis_1.emoji), (1000 * 04 ) + lim );
-    setTimeout(() => app.vote.create(2, am.ab_1.content    , dc, am.ab_1.emoji    ), (1000 * 08 ) + lim );
+    setTimeout(() => app.vote.create(1, am.argos_1.content , dc , am.argos_1.emoji), (1000 * 01 ) + lim );
+    setTimeout(() => app.vote.create(1, am.baltan_1.content, dc, am.baltan_1.emoji), (1000 * 03 ) + lim );
+    setTimeout(() => app.vote.create(1, am.biakis_1.content, dc, am.biakis_1.emoji), (1000 * 05 ) + lim );
+    setTimeout(() => app.vote.create(2, am.ab_1.content    , dc, am.ab_1.emoji    ), (1000 * 07 ) + lim );
 
     setTimeout(() => app.discordRest.send(app.msg.hr("==== ▼ 2팟 모집글 ========="), dc), (1000 * 09 ) + lim );
     setTimeout(() => app.vote.create(2, am.argos_2.content , dc , am.argos_2.emoji), (1000 * 10 ) + lim );
     setTimeout(() => app.vote.create(2, am.baltan_2.content, dc, am.baltan_2.emoji), (1000 * 15 ) + lim );
     setTimeout(() => app.vote.create(2, am.biakis_2.content, dc, am.biakis_2.emoji), (1000 * 20 ) + lim );
 
-    setTimeout(() => app.discordRest.send(app.msg.hr("==== ▼ 기타 모집글 ========="), dc), (1000 * 29 ) + lim );
-    setTimeout(() => app.vote.create(2, am.naruni.content  , dc, am.naruni.emoji  ), (1000 * 30 ) + lim );
+    setTimeout(() => app.discordRest.send(app.msg.hr("==== ▼ 기타 모집글 ========="), dc), (1000 * 25 ) + lim );
+    setTimeout(() => app.vote.create(2, am.naruni.content  , dc, am.naruni.emoji  ), (1000 * 26 ) + lim );
     
     
     // 끝
