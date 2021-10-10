@@ -22,7 +22,11 @@ cron.schedule('* * * * *', () => {
     let now         = momnet().day(0).format("YYYY-MM-DD HH:mm:ss");
     console.log( ">> check : ", now);
 });
+<<<<<<< Updated upstream
 cron.schedule('00 20 * * 0', () => {
+=======
+function autoSend() {
+>>>>>>> Stashed changes
     console.log( ">> Actice");
     let am      = app.msg.init();
         am      = app.msg.get();
@@ -68,11 +72,20 @@ cron.schedule('00 20 * * 0', () => {
         app.discordRest.send(am.end, dc);
     }, (1000 * 35 ) + lim);
 
+<<<<<<< Updated upstream
 });
+=======
+};
+
+cron.schedule('00 20 * * 0', () => {
+    autoSend();
+});
+autoSend();
+>>>>>>> Stashed changes
 
 
 // ===============================
-// 투표내역 실시간 lisen
+// 투표내역 실시간 lisen                                   
 client.on('messageReactionAdd', async (reaction, user) => {
     const channelId = reaction.message.channel.id;
     const messageId = reaction.message.id;
