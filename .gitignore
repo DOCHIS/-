@@ -9,6 +9,10 @@ config.json
 01-eventLisner/package-lock.json
 02-messageSender/package-lock.json
 
+# 80
+80-guildManager/node_modules
+80-guildManager/package-lock.json
+
 # 99
 99-dochis/product.json
 99-dochis/node_modules
