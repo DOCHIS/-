@@ -106,8 +106,8 @@ module.exports = function () {
             log_discord_sned = 'Not'
           WHERE
             (
-              replace(log_title, '\r\n', '') NOT LIKE CONCAT('%', log_keyword ,'%') AND
-              replace(log_content, '\r\n', '') NOT LIKE CONCAT('%', log_keyword ,'%')
+              REPLACE(log_title,' ','') NOT LIKE CONCAT('%', log_keyword ,'%') AND
+              REPLACE(log_content,' ','') NOT LIKE CONCAT('%', log_keyword ,'%')
             )	OR
             log_board_name NOT IN ('로스트아크 인벤 서버 사건/사고 게시판', '로스트아크 인벤 이슈/토론/버그 게시판')
         `;
