@@ -40,7 +40,7 @@ module.exports = function () {
      */
     getKeyword(){
       return new Promise((resolve, reject) => {
-        let keywords = [];
+        let keywords = ['모두도망쳐','어서도망쳐','빨리도망쳐'];
         guildMember.getSlaveMembers().then((data)=>{
           for (const [key, row] of Object.entries(data)){
             keywords.push(row.mb_nickname);
@@ -106,10 +106,10 @@ module.exports = function () {
             log_discord_sned = 'Not'
           WHERE
             (
-              log_title NOT LIKE CONCAT('%', log_keyword ,'%') AND
-              log_content NOT LIKE CONCAT('%', log_keyword ,'%')
+              replace(log_title, '\r\n', '') NOT LIKE CONCAT('%', log_keyword ,'%') AND
+              replace(log_content, '\r\n', '') NOT LIKE CONCAT('%', log_keyword ,'%')
             )	OR
-            log_board_name != '로스트아크 인벤 서버 사건/사고 게시판'
+            log_board_name NOT IN ('로스트아크 인벤 서버 사건/사고 게시판', '로스트아크 인벤 이슈/토론/버그 게시판')
         `;
       this.query(sql).then((fetch)=>{
         this.query("select * from inven_crawler_log WHERE log_discord_sned = 'N' order by log_date asc").then((result)=>{
