@@ -91,7 +91,9 @@ module.exports = function () {
                                     set
                                       log_data        = '${logData}',
                                       mb_integrity    = '${data.sha}',
-                                      mb_nickname     = '${r.name}'
+                                      mb_nickname     = '${r.name}',
+                                      mb_pvpLevel     = '${r.pvpLevel}',
+                                      mb_itemLevel    = '${r.itemLevel}'
                 `).then(function(result){
                   vm.query(`
                     insert into member_slave
