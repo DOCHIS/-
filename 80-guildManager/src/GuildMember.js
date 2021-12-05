@@ -91,6 +91,9 @@ module.exports = function () {
                                     set
                                       log_data        = '${logData}',
                                       mb_integrity    = '${data.sha}',
+                                      mb_server       = '${r.server}',
+                                      mb_class        = '${r.class}',
+                                      mb_guild        = '${r.guild}',
                                       mb_nickname     = '${r.name}',
                                       mb_pvpLevel     = '${r.pvpLevel}',
                                       mb_itemLevel    = '${r.itemLevel}'
@@ -99,6 +102,9 @@ module.exports = function () {
                     insert into member_slave
                                       set
                                         mb_integrity  = '${data.sha}',
+                                        mb_server     = '${r.server}',
+                                        mb_class      = '${r.class}',
+                                        mb_guild      = '${r.guild}',
                                         mb_nickname   = '${r.name}',
                                         mb_pvpLevel   = '${r.pvpLevel}',
                                         mb_itemLevel  = '${r.itemLevel}',

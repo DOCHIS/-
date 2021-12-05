@@ -38,7 +38,7 @@ module.exports = function () {
     memberItemLevelAlime(){
       let vm          = this;
       let timeout     = 500;
-      this.query("select * from member_master").then((members)=>{
+      this.query("select * from member_slave where mb_guild = '모두도망쳐' ").then((members)=>{
         members.forEach((member) => {
           let sql       = `
                             select

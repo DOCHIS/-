@@ -28,16 +28,6 @@ module.exports = function (config, emoji) {
             });
 
             // 기본데이터 반환
-            let itemLevel = parseInt(
-              $(".myinfo__contents-level")
-                .find(".wrapper-define")
-                .eq(1)
-                .find(".level")
-                .eq(0)
-                .html()
-                .replace(/(<([^>]+)>)/gi, "")
-                .replace(",", "")
-            );
             const data = {
               memberNo  : response.data.match(/(var \_memberNo \= \'*.+'?)/g),
               pcId      : response.data.match(/(var \_pcId \= \'*.+'?)/g),
@@ -48,8 +38,27 @@ module.exports = function (config, emoji) {
             for (const [key, value] of Object.entries(data)) {
               data[key] = value[0].split("'")[1];
             }
-            data.itemLevel = itemLevel;
-            data.list = tmp;
+
+            // 추가 데이터 넣기
+            let addData     = {
+              itemLevel     : parseInt(
+                                $(".myinfo__contents-level")
+                                  .find(".wrapper-define")
+                                  .eq(1)
+                                  .find(".level")
+                                  .eq(0)
+                                  .html()
+                                  .replace(/(<([^>]+)>)/gi, "")
+                                  .replace(",", "")
+                              ),
+              server        : $(".wrapper-define").eq(0).find("dd").eq(0).text().replace('@',''),
+              class         : $(".wrapper-define").eq(0).find("dd").eq(1).text(),
+              guild         : $(".guild-name").text(),
+              list          : tmp,
+            };
+            for (const [key, value] of Object.entries(addData)) {
+              data[key] = value;
+            }
 
             resolve(data);
           })
