@@ -79,8 +79,8 @@ module.exports = function (message) {
     index(commend, params) {
       connect_db();
 
-      let check     = message.member.roles.cache.find((i)=> i.name === '길드장' || '부길드장');
-      if(check.name !== '길드장' && '부길드장')
+      let check     = message.member.roles.cache.filter(i => i.name === '길드장' || i.name === '부길드장');
+      if(check.length == false)
         return message.channel.send(`\`\`\`\해당 명령어는 길드장 또는 부길드장 전용명령어 입니다.\`\`\``);
 
       switch (commend) {
