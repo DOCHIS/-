@@ -31,7 +31,7 @@ module.exports = function (message) {
   function printMemberList(error, rows) {
     let i = 1;
     let content = '```\n';
-    content += `현재 따봉도치봇에 등록된 길드원(본길드)은 모두 ${rows.length}명 입니다.\n`;
+    content += `💚 현재 따봉도치봇에 등록된 길드원(본길드)은 모두 ${rows.length}명 입니다.\n`;
     content += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
     content += `< 목록 >\n`;
     rows.forEach((row) => {
@@ -46,7 +46,7 @@ module.exports = function (message) {
    * 길드원 추가를 성공한 경우
    */
   function membmerAddSuccess(error, rows, params) {
-    return message.channel.send(`\`\`\`\n${params.nickname}님을 따봉도치봇에 등록했습니다.\`\`\``);
+    return message.channel.send(`\`\`\`\n✅ ${params.nickname}님을 따봉도치봇에 등록했습니다.\`\`\``);
   }
 
   /**
@@ -60,7 +60,7 @@ module.exports = function (message) {
    * 길드원 삭제를 성공한 경우
    */
   function membmerDeleteSuccess(error, rows, params) {
-    return message.channel.send(`\`\`\`\n${params.nickname}님을 따봉도치봇에서 삭제했습니다.\`\`\``);
+    return message.channel.send(`\`\`\`\n❌ ${params.nickname}님을 따봉도치봇에서 삭제했습니다.\`\`\``);
   }
 
   /**
@@ -81,7 +81,7 @@ module.exports = function (message) {
 
       let check     = message.member.roles.cache.filter(i => i.name === '길드장' || i.name === '부길드장');
       if(check.length == false)
-        return message.channel.send(`\`\`\`\해당 명령어는 길드장 또는 부길드장 전용명령어 입니다.\`\`\``);
+        return message.channel.send(`\`\`\`\🚫 해당 명령어는 길드장 또는 부길드장 전용명령어 입니다.\`\`\``);
 
       switch (commend) {
         case '!!목록':
@@ -119,7 +119,7 @@ module.exports = function (message) {
     },
     addMember__after(error, rows, params) {
       if (rows.length)
-        return params.failCallback(`이미 ${params.nickname}님은 따봉도치봇에 등록되어있습니다`);
+        return params.failCallback(`🚫 이미 ${params.nickname}님은 따봉도치봇에 등록되어있습니다`);
 
       return query(`insert into member_master set mb_nickname = '${params.nickname}' `, params.successCallback, params);
     },
@@ -134,7 +134,7 @@ module.exports = function (message) {
     },
     deleteMember__after(error, rows, params) {
       if (rows.length == false)
-        return params.failCallback(`${params.nickname}님은 따봉도치봇에 등록되어있지 않습니다.`);
+        return params.failCallback(`🚫 ${params.nickname}님은 따봉도치봇에 등록되어있지 않습니다.`);
 
       return query(`delete from member_master where mb_nickname = '${params.nickname}' `, params.successCallback, params);
     }
