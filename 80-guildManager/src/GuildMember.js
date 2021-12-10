@@ -71,8 +71,9 @@ module.exports = function () {
     if (params == undefined) {
       connect_db();
       db.beginTransaction();
-      query("delete from member_slave");
-      getMasterMembmer(syncMasterMemeberController, { next: 'updateMasterMembmersSha' })
+      query("delete from member_slave", ()=>{
+        getMasterMembmer(syncMasterMemeberController, { next: 'updateMasterMembmersSha' })
+      });
     }
 
     // 2. master member들의 sha update

@@ -7,13 +7,13 @@ const guildSasageaCheck       = new guildSasageaCheckClass();
 const guildAlimeClass         = require('./src/GuildAlime');
 const guildAlime              = new guildAlimeClass();
 
-// [매시 00,20,40분] 길드원 목록을 새로고침함
-cron.schedule('0 58,18,28 * * * * *', () => {
+// [매시 08,18,28,38,48,58분] 길드원 목록을 새로고침함
+cron.schedule('0 08,18,28,38,48,58 * * * * *', () => {
   guildMember.syncMasterMemeber();
 });
 
-// [매시 00,20,40분] 알림을 발송함
-cron.schedule('0 00,20,40 * * * * *', () => {
+// [매시 00,10,20,30,40,50분] 알림을 발송함
+cron.schedule('0 00,10,20,30,40,50 * * * * *', () => {
   guildAlime.memberItemLevelAlime();
 });
 
