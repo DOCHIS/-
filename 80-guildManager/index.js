@@ -17,16 +17,7 @@ cron.schedule('0 00,10,20,30,40,50 * * * * *', () => {
   guildAlime.memberItemLevelAlime();
 });
 
-// [매시 45분] 사사게 게시판을 검사함
-cron.schedule('0 45 * * * * *', () => {
-  guildSasageaCheck.check();
-});
-
-// [매시 55분] 디스코드로 알림 전송
-cron.schedule('0 55 * * * * *', () => {
+// [매시 5분] 디스코드로 알림 전송
+cron.schedule('0 05,15,25,35,45,55 * * * * *', () => {
   guildSasageaCheck.send();
 });
-
-
-// guildMember.syncMasterMemeber();
-guildAlime.memberItemLevelAlime();

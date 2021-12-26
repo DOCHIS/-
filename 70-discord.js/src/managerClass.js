@@ -87,6 +87,9 @@ module.exports = function (message) {
         case '!!목록':
           return this.getMemberList(undefined, printMemberList);
 
+        case '!!검색':
+          
+
         case '!!등록':
           return this.addMember(params, {
             successCallback: membmerAddSuccess,

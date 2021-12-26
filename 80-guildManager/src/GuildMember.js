@@ -10,7 +10,9 @@ const loacwr = new loastarkCrawler();
 module.exports = function () {
 
   var db = null;
-  function connect_db() {
+  function connect_db(connection) {
+    if(connection)
+      return db = connection;
     db = mysql.createConnection({
       host: config.mysql_host,
       user: config.mysql_user,
@@ -38,6 +40,13 @@ module.exports = function () {
    */
   function getMasterMembmer(callback, params) {
     return query("select * from member_master", callback, params);
+  }
+
+  /**
+   * slave 길드원 목록을 가져옴
+   */
+   function getSlaveMembmer(callback, params) {
+    return query("select * from member_slave", callback, params);
   }
 
   /**
@@ -138,7 +147,9 @@ module.exports = function () {
    * 주 컨트롤러
    */
   return {
+    config:(db)=>{ connect_db(db); },
     syncMasterMemeber: () => { syncMasterMemeberController(); },
-    memberItemLevelAlime: ()=>{}
+    memberItemLevelAlime: ()=>{},
+    getSlaveMembers:(callback, params)=>{ getSlaveMembmer(callback, params); }
   };
 };

@@ -33,6 +33,7 @@ client.on('messageCreate', msg => {
     case '!정산'     : return raidSettlement.index(params);
     case '!!등록'    : 
     case '!!삭제'    : 
+    case '!!검색'    : 
     case '!!목록'    : return manager.index(commend, params);
   }
 
@@ -42,5 +43,5 @@ client.login(config.token);
 
 
 // test
-// const raidSettlement  = new raidSettlementClass(client);
-// raidSettlement.index('녹청색');
+const raidSettlement  = new raidSettlementClass(client);
+raidSettlement.index('녹청색');
