@@ -36,7 +36,10 @@ module.exports = function (config, emoji) {
               pvpLevel  : response.data.match(/(var \_pvpLevel \= \'*.+'?)/g),
             }
             for (const [key, value] of Object.entries(data)) {
-              data[key] = value[0].split("'")[1];
+              if(value)
+                data[key] = value[0].split("'")[1];
+              else 
+                return resolve(data);
             }
 
             // 추가 데이터 넣기
@@ -79,6 +82,8 @@ module.exports = function (config, emoji) {
 
         vm.get_charecter(nick).catch(err => { reject(err); })
           .then(function (data) {
+            if(data.memberNo === null)
+              return resolve(false);
 
             // 내부 로직용 loop 함수
             function __inLoop(list, index) {

@@ -39,7 +39,7 @@ module.exports = function () {
    * getTimeout
    */
   function getTimeout(action, plustime) {
-    plustime    = plustime ?? 500;
+    plustime = plustime ?? 500;
     if (action == 'discord') {
       return discordTimeout += plustime;
     } else if (action == 'search') {
@@ -60,24 +60,26 @@ module.exports = function () {
    * slave 길드원들의 사사게 기록을 검색함
    */
   function searchSlaveMemeberSasagea(error, data, params) {
-    discordTimeout      = 0;
-    searchTimeout       = 0;
-    mysqlTimeout        = 0;
+    discordTimeout = 0;
+    searchTimeout = 0;
+    mysqlTimeout = 0;
 
 
     // 1. init && slave member목록 구하기
-    if (params == undefined) {
+    if (params?.next == undefined) {
       connect_db();
       guildMember.config(db);
       if (data == undefined) {
         getKeyword(memberRowsConvertKeyrows, {
-          'addKeyword': ['모두도망쳐', '어서도망쳐', '빨리도망쳐'],
-          'next': 'search',
-          'callback': searchSlaveMemeberSasagea
+          addKeyword: ['모두도망쳐', '어서도망쳐', '빨리도망쳐'],
+          next: 'search',
+          callback: searchSlaveMemeberSasagea,
+          sendCallback: params?.sendCallback
         });
       } else {
         searchSlaveMemeberSasagea(undefined, data, {
-          'next': 'search'
+          next: 'search',
+          sendCallback: params?.sendCallback
         });
       }
     }
@@ -88,13 +90,21 @@ module.exports = function () {
         let st = getTimeout('search');
         console.log("set [st] ", st);
         setTimeout(() => {
-          searchSasagea(keyword, searchSlaveMemeberSasagea, { next: 'send' });
+          searchSasagea(keyword, searchSlaveMemeberSasagea, {
+            next: 'send',
+            sendCallback: params?.sendCallback
+          });
         }, st);
       }
     }
-
+    
     // 3. 디스코드로 알림 전송
     if (params?.next == 'send') {
+
+      // send용 콜백함수가 있는 경우
+      if (params?.sendCallback)
+        return params.sendCallback(error, data, params);
+
       let sql = `
         UPDATE inven_crawler_log
         SET
@@ -114,7 +124,7 @@ module.exports = function () {
           log_date asc ;
       `;
       query(sql, (error, result) => {
-        result    = result[1];
+        result = result[1];
         for (const [k, row] of Object.entries(result)) {
           query(`update inven_crawler_log set log_discord_sned = 'Y' where log_no = '${row.log_no}' limit 1`);
 
@@ -143,7 +153,7 @@ module.exports = function () {
           dt = getTimeout('discord');
           console.log("set [dt] ", dt);
           setTimeout(() => {
-            discordRest.send({ content: content }, '920311624508780564');
+            discordRest.send({ content: content }, '914196518372790282');
           }, dt);
         }
       });
@@ -202,6 +212,9 @@ module.exports = function () {
    * 주 컨트롤러
    */
   return {
-    search: (keyword) => { searchSlaveMemeberSasagea(undefined, keyword ? [keyword] : undefined); },
+    search: (keyword, params) => {
+      if (keyword)
+        searchSlaveMemeberSasagea(undefined, keyword ?? undefined, params);
+    },
   };
 };
