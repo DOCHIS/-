@@ -8,22 +8,22 @@ const guildAlimeClass         = require('./src/GuildAlime');
 const guildAlime              = new guildAlimeClass();
 
 // [매시 08,18,28,38,48,58분] 길드원 목록을 새로고침함
-cron.schedule('0 08,18,28,38,48,58 * * * * *', () => {
-  guildMember.syncMasterMemeber();
-});
+// cron.schedule('0 08,18,28,38,48,58 * * * * *', () => {
+//   guildMember.syncMasterMemeber();
+// });
 
-// [매시 00,10,20,30,40,50분] 알림을 발송함
-cron.schedule('0 00,10,20,30,40,50 * * * * *', () => {
-  guildAlime.memberItemLevelAlime();
-});
+// // [매시 00,10,20,30,40,50분] 알림을 발송함
+// cron.schedule('0 00,10,20,30,40,50 * * * * *', () => {
+//   guildAlime.memberItemLevelAlime();
+// });
 
-// [매시 5분] 디스코드로 알림 전송
-cron.schedule('0 05,15,25,35,45,55 * * * * *', () => {
-  guildSasageaCheck.search();
-});
+// // [매시 5분] 디스코드로 알림 전송
+// cron.schedule('0 05,15,25,35,45,55 * * * * *', () => {
+//   guildSasageaCheck.search();
+// });
 
 
-console.log(">> first search");
+console.log(">> [000] | first search");
 // guildSasageaCheck.search();
 guildMember.syncMasterMemeber();
 // guildMember.memberItemLevelAlime();

@@ -39,7 +39,7 @@ module.exports = function () {
    * master 길드원 목록을 가져옴
    */
   function getMasterMembmer(callback, params) {
-    return query("select * from member_master", callback, params);
+    return query("select * from member_master limit 1", callback, params);
   }
 
   /**
@@ -56,7 +56,9 @@ module.exports = function () {
     return new Promise((resolve, reject) => {
       loacwr.get_myCharecters(nickname).then(function (raw) {
         let newRaw = [];
-        console.log(">> raw", nickname, "/", raw, "/");
+
+        if(raw == false)
+          return resolve(false); 
 
         for (const [key, row] of Object.entries(raw.list)) {
           newRaw.push(row.name);
@@ -80,65 +82,69 @@ module.exports = function () {
 
     // 1. db connect & load master member
     if (params == undefined) {
-      console.log(">> | params", params);
+      console.log(">> [003] |  params");
       connect_db();
       db.beginTransaction();
-      console.log(">> | params | start");
+      console.log(">> [004] |  params | start");
       query("delete from member_slave", ()=>{
-        console.log(">> | params | query end");
+        console.log(">> [005] |  params | query end");
         getMasterMembmer(syncMasterMemeberController, { next: 'updateMasterMembmersSha' })
       });
     }
 
     // 2. master member들의 sha update
     else if (params.next == 'updateMasterMembmersSha') {
-      console.log(">> | updateMasterMembmersSha", params);
+      console.log(">> [006] |  updateMasterMembmersSha");
       let prograssed = [];
       let i          = 0;
       let count      = 0;
       let timeOut    = null;
       for (const [key, row] of Object.entries(data)) {
-        getMasterMemberSha(row.mb_nickname).then(function (sha) {
-          query(`update member_master set mb_integrity = '${sha.sha}' where mb_nickname = '${row.mb_nickname}' limit 1`);
+          getMasterMemberSha(row.mb_nickname).then(function (sha) {
+            console.log(">> [007] | ", row.mb_nickname, " | ", sha ? true : false);
+          if(sha){
+            query(`update member_master set mb_integrity = '${sha.sha}' where mb_nickname = '${row.mb_nickname}' limit 1`);
 
-          // 해당 integrity에 대한 slave 케릭 목록 삭제
-          if (prograssed.indexOf(sha.sha) === -1) {
-            count   = count + sha.list.length;
-            for (const [k, r] of Object.entries(sha.list)) { // 크롤링 로그와 slave 케릭 정보 추가
-              let logData = JSON.stringify(r);
-              let query1 = `insert into member_crawler_log
-              set
-                mb_integrity    = '${sha.sha}',
-                mb_server       = '${r.server}',
-                mb_class        = '${r.class}',
-                mb_guild        = '${r.guild}',
-                mb_nickname     = '${r.name}',
-                mb_pvpLevel     = '${r.pvpLevel}',
-                mb_itemLevel    = '${r.itemLevel}' `;
-              let query2 = `insert into member_slave
+            // 해당 integrity에 대한 slave 케릭 목록 삭제
+            if (prograssed.indexOf(sha.sha) === -1) {
+              count   = count + sha.list.length;
+
+              for (const [k, r] of Object.entries(sha.list)) { // 크롤링 로그와 slave 케릭 정보 추가
+                let logData = JSON.stringify(r);
+                let query1 = `insert into member_crawler_log
                 set
-                  mb_integrity  = '${sha.sha}',
-                  mb_server     = '${r.server}',
-                  mb_class      = '${r.class}',
-                  mb_guild      = '${r.guild}',
-                  mb_nickname   = '${r.name}',
-                  mb_pvpLevel   = '${r.pvpLevel}',
-                  mb_itemLevel  = '${r.itemLevel}' `;
-              query(query1, (error, result) => {
-                query(query2 + `, log_no = '${result.insertId}'`, () => {
-                  i++;
-                  console.log(">>", i, "/", count);
-                  if(timeOut)
-                  {
-                    clearTimeout(timeOut);
-                  }
-                  timeOut = setTimeout(()=>{
-                    console.log(">> commit run");
-                    db.commit();
-                  }, 30000);
+                  mb_integrity    = '${sha.sha}',
+                  mb_server       = '${r.server}',
+                  mb_class        = '${r.class}',
+                  mb_guild        = '${r.guild}',
+                  mb_nickname     = '${r.name}',
+                  mb_pvpLevel     = '${r.pvpLevel}',
+                  mb_itemLevel    = '${r.itemLevel}' `;
+                let query2 = `insert into member_slave
+                  set
+                    mb_integrity  = '${sha.sha}',
+                    mb_server     = '${r.server}',
+                    mb_class      = '${r.class}',
+                    mb_guild      = '${r.guild}',
+                    mb_nickname   = '${r.name}',
+                    mb_pvpLevel   = '${r.pvpLevel}',
+                    mb_itemLevel  = '${r.itemLevel}' `;
+                query(query1, (error, result) => {
+                  query(query2 + `, log_no = '${result.insertId}'`, () => {
+                    i++;
+                    console.log(">> [008] | ", i, "/", count);
+                    if(timeOut)
+                    {
+                      clearTimeout(timeOut);
+                    }
+                    timeOut = setTimeout(()=>{
+                      console.log(">> [009] | commit run");
+                      db.commit();
+                    }, 30000);
+                  });
                 });
-              });
-              prograssed.push(data.sha);
+                prograssed.push(data.sha);
+              }
             }
           }
         });

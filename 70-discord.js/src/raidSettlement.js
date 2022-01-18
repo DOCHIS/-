@@ -29,7 +29,7 @@ module.exports = function (client) {
     */
     query(sql) {
       return new Promise((resolve, reject) => {
-        console.log(">> sql(1) : ", sql);
+        console.log(">> [001] | sql(1) : ", sql);
         let connection = mysql.createConnection({
           host: config.mysql_host,
           user: config.mysql_user,

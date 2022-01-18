@@ -12,58 +12,65 @@ module.exports = function (config, emoji) {
       return new Promise((resolve, reject) => {
         axios.get(`${ROA_URL}/Profile/Character/` + encodeURI(nick), {})
           .then(response => {
-
-            // 보유 케릭정보 뽑기
-            const $ = cheerio.load(response.data);
-            const list = $(".myinfo__character--wrapper2").find('li');
-            const tmp = [];
-            list.each(function (index, elem) {
-              let obj = list.eq(index);
-              let level = obj.find('span').text().trim();
-              let name = obj.text().replace(level, '').trim();
-              tmp.push({
-                level: level,
-                name: name
+            // 케릭정보가 없는 경우
+            if( response.data.indexOf('캐릭터 정보가 없습니다. 캐릭터명을 확인해주세요.') !== -1){
+              console.log(">> [011] | 404 | ", nick);
+              resolve(false);
+            }
+            else
+            {
+              // 보유 케릭정보 뽑기
+              const $ = cheerio.load(response.data);
+              const list = $(".myinfo__character--wrapper2").find('li');
+              const tmp = [];
+              list.each(function (index, elem) {
+                let obj = list.eq(index);
+                let level = obj.find('span').text().trim();
+                let name = obj.text().replace(level, '').trim();
+                tmp.push({
+                  level: level,
+                  name: name
+                });
               });
-            });
 
-            // 기본데이터 반환
-            const data = {
-              memberNo  : response.data.match(/(var \_memberNo \= \'*.+'?)/g),
-              pcId      : response.data.match(/(var \_pcId \= \'*.+'?)/g),
-              worldNo   : response.data.match(/(var \_worldNo \= \'*.+'?)/g),
-              pcName    : response.data.match(/(var \_pcName \= \'*.+'?)/g),
-              pvpLevel  : response.data.match(/(var \_pvpLevel \= \'*.+'?)/g),
-            }
-            for (const [key, value] of Object.entries(data)) {
-              if(value)
-                data[key] = value[0].split("'")[1];
-              else 
-                return resolve(data);
-            }
+              // 기본데이터 반환
+              const data = {
+                memberNo  : response.data.match(/(var \_memberNo \= \'*.+'?)/g),
+                pcId      : response.data.match(/(var \_pcId \= \'*.+'?)/g),
+                worldNo   : response.data.match(/(var \_worldNo \= \'*.+'?)/g),
+                pcName    : response.data.match(/(var \_pcName \= \'*.+'?)/g),
+                pvpLevel  : response.data.match(/(var \_pvpLevel \= \'*.+'?)/g),
+              }
+              for (const [key, value] of Object.entries(data)) {
+                if(value)
+                  data[key] = value[0].split("'")[1];
+                else 
+                  return resolve(data);
+              }
 
-            // 추가 데이터 넣기
-            let addData     = {
-              itemLevel     : parseInt(
-                                $(".myinfo__contents-level")
-                                  .find(".wrapper-define")
-                                  .eq(1)
-                                  .find(".level")
-                                  .eq(0)
-                                  .html()
-                                  .replace(/(<([^>]+)>)/gi, "")
-                                  .replace(",", "")
-                              ),
-              server        : $(".wrapper-define").eq(0).find("dd").eq(0).text().replace('@',''),
-              class         : $(".wrapper-define").eq(0).find("dd").eq(1).text(),
-              guild         : $(".guild-name").text(),
-              list          : tmp,
-            };
-            for (const [key, value] of Object.entries(addData)) {
-              data[key] = value;
-            }
+              // 추가 데이터 넣기
+              let addData     = {
+                itemLevel     : parseInt(
+                                  $(".myinfo__contents-level")
+                                    .find(".wrapper-define")
+                                    .eq(1)
+                                    .find(".level")
+                                    .eq(0)
+                                    .html()
+                                    .replace(/(<([^>]+)>)/gi, "")
+                                    .replace(",", "")
+                                ),
+                server        : $(".wrapper-define").eq(0).find("dd").eq(0).text().replace('@',''),
+                class         : $(".wrapper-define").eq(0).find("dd").eq(1).text(),
+                guild         : $(".guild-name").text(),
+                list          : tmp,
+              };
+              for (const [key, value] of Object.entries(addData)) {
+                data[key] = value;
+              }
 
-            resolve(data);
+              resolve(data);
+            }
           })
           .catch(function (error) {
             console.log("!! error", error);
@@ -82,7 +89,7 @@ module.exports = function (config, emoji) {
 
         vm.get_charecter(nick).catch(err => { reject(err); })
           .then(function (data) {
-            if(data.memberNo === null)
+            if(data == false || data.memberNo === null)
               return resolve(false);
 
             // 내부 로직용 loop 함수

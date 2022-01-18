@@ -1,4 +1,5 @@
-const { Client, Intents } = require('discord.js');
+const { Client, Intents }   = require('discord.js');
+const { REST }              = require('@discordjs/rest')
 const client                = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 const config                = require('../config.json');
 const raidSettlementClass   = require('./src/raidSettlement');
@@ -43,5 +44,6 @@ client.login(config.token);
 
 
 // test
-const raidSettlement  = new raidSettlementClass(client);
-raidSettlement.index('녹청색');
+// const raidSettlement  = new raidSettlementClass(client);
+// raidSettlement.index('녹청색');
+

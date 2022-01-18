@@ -63,7 +63,7 @@ module.exports = function () {
     discordTimeout = 0;
     searchTimeout = 0;
     mysqlTimeout = 0;
-    console.log(">> search start");
+    console.log(">> [010] | search start");
 
     // 1. init && slave member목록 구하기
     if (params?.next == undefined) {
