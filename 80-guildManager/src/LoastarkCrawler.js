@@ -42,10 +42,13 @@ module.exports = function (config, emoji) {
                 pvpLevel  : response.data.match(/(var \_pvpLevel \= \'*.+'?)/g),
               }
               for (const [key, value] of Object.entries(data)) {
-                if(value)
+                if(value){
                   data[key] = value[0].split("'")[1];
-                else 
-                  return resolve(data);
+                }else{
+                  console.log(">> [011] | no-value |", nick);
+                  console.log("ㄴ", response.data);
+                  return resolve(false);
+                }
               }
 
               // 추가 데이터 넣기
