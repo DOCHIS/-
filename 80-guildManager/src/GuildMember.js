@@ -39,7 +39,7 @@ module.exports = function () {
    * master 길드원 목록을 가져옴
    */
   function getMasterMembmer(callback, params) {
-    return query("select * from member_master limit 1", callback, params);
+    return query("select * from member_master", callback, params);
   }
 
   /**
