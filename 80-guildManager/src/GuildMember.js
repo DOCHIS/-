@@ -56,9 +56,12 @@ module.exports = function () {
     return new Promise((resolve, reject) => {
       loacwr.get_myCharecters(nickname).then(function (raw) {
         let newRaw = [];
+        console.log(">> raw", nickname, "/", raw, "/");
+
         for (const [key, row] of Object.entries(raw.list)) {
           newRaw.push(row.name);
         }
+        
         let json = JSON.stringify(newRaw);
         resolve({
           list: raw.list,
@@ -74,19 +77,22 @@ module.exports = function () {
    * syncMasterMemeber controller
    */
   function syncMasterMemeberController(error, data, params) {
-    console.log(">>", params);
 
     // 1. db connect & load master member
     if (params == undefined) {
+      console.log(">> | params", params);
       connect_db();
       db.beginTransaction();
+      console.log(">> | params | start");
       query("delete from member_slave", ()=>{
+        console.log(">> | params | query end");
         getMasterMembmer(syncMasterMemeberController, { next: 'updateMasterMembmersSha' })
       });
     }
 
     // 2. master member들의 sha update
     else if (params.next == 'updateMasterMembmersSha') {
+      console.log(">> | updateMasterMembmersSha", params);
       let prograssed = [];
       let i          = 0;
       let count      = 0;
@@ -102,7 +108,6 @@ module.exports = function () {
               let logData = JSON.stringify(r);
               let query1 = `insert into member_crawler_log
               set
-                log_data        = '${logData}',
                 mb_integrity    = '${sha.sha}',
                 mb_server       = '${r.server}',
                 mb_class        = '${r.class}',
@@ -148,8 +153,8 @@ module.exports = function () {
    */
   return {
     config:(db)=>{ connect_db(db); },
-    syncMasterMemeber: () => { syncMasterMemeberController(); },
-    memberItemLevelAlime: ()=>{},
-    getSlaveMembers:(callback, params)=>{ getSlaveMembmer(callback, params); }
+    syncMasterMemeber: () => { console.log(">> syncMasterMemeber"); syncMasterMemeberController(); },
+    memberItemLevelAlime: ()=>{ console.log(">> memberItemLevelAlime"); },
+    getSlaveMembers:(callback, params)=>{ console.log(">> getSlaveMembers"); getSlaveMembmer(callback, params); }
   };
 };

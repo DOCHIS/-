@@ -39,7 +39,7 @@ module.exports = function () {
    * getTimeout
    */
   function getTimeout(action, plustime) {
-    plustime = plustime ?? 500;
+    plustime = plustime ? plustime : 500;
     if (action == 'discord') {
       return discordTimeout += plustime;
     } else if (action == 'search') {
@@ -63,7 +63,7 @@ module.exports = function () {
     discordTimeout = 0;
     searchTimeout = 0;
     mysqlTimeout = 0;
-
+    console.log(">> search start");
 
     // 1. init && slave member목록 구하기
     if (params?.next == undefined) {
@@ -213,8 +213,7 @@ module.exports = function () {
    */
   return {
     search: (keyword, params) => {
-      if (keyword)
-        searchSlaveMemeberSasagea(undefined, keyword ?? undefined, params);
+      searchSlaveMemeberSasagea(undefined, keyword ?? undefined, params);
     },
   };
 };

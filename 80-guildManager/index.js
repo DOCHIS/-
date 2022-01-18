@@ -21,3 +21,9 @@ cron.schedule('0 00,10,20,30,40,50 * * * * *', () => {
 cron.schedule('0 05,15,25,35,45,55 * * * * *', () => {
   guildSasageaCheck.search();
 });
+
+
+console.log(">> first search");
+// guildSasageaCheck.search();
+guildMember.syncMasterMemeber();
+// guildMember.memberItemLevelAlime();
