@@ -17,7 +17,8 @@ module.exports = function () {
       host: config.mysql_host,
       user: config.mysql_user,
       password: config.mysql_password,
-      database: config.mysql_database
+      database: config.mysql_database,
+      multipleStatements: true
     });
   }
   function close_db() {
@@ -77,80 +78,89 @@ module.exports = function () {
 
   /**
    * syncMasterMemeber controller
+   * [22-02-08 Update] 로아 전투정보실의 IP 밴 정책으로 인하여
+   * 기본 비동기로 처리되던 알고리즘을 동기형으로 수정하였습니다.
    */
   function syncMasterMemeberController(error, data, params) {
+    let limit     = 1;
 
     // 1. db connect & load master member
     if (params == undefined) {
-      console.log(">> [003] |  params");
       connect_db();
-      db.beginTransaction();
-      console.log(">> [004] |  params | start");
-      query("delete from member_slave", ()=>{
-        console.log(">> [005] |  params | query end");
-        getMasterMembmer(syncMasterMemeberController, { next: 'updateMasterMembmersSha' })
-      });
+      query(
+        `select * from member_master order by updated_at asc limit ${limit}`,
+        syncMasterMemeberController,
+        { next: 'getMemberData' }
+      );
     }
 
-    // 2. master member들의 sha update
-    else if (params.next == 'updateMasterMembmersSha') {
-      console.log(">> [006] |  updateMasterMembmersSha");
-      let prograssed = [];
-      let i          = 0;
-      let count      = 0;
-      let timeOut    = null;
+    // 2. member들의 캐릭터 정보 크롤링
+    else if (params.next == 'getMemberData') {
+      let updateList      = [];
+      let count           = 0;
       for (const [key, row] of Object.entries(data)) {
-          getMasterMemberSha(row.mb_nickname).then(function (sha) {
-            console.log(">> [007] | ", row.mb_nickname, " | ", sha ? true : false);
-          if(sha){
-            query(`update member_master set mb_integrity = '${sha.sha}' where mb_nickname = '${row.mb_nickname}' limit 1`);
+        getMasterMemberSha(row.mb_nickname).then(function (sha) {
+          let raw     = {
+            ...{nick : row.mb_nickname},
+            ...{list : [] },
+            ...sha
+          };
+          updateList.push(raw);
 
-            // 해당 integrity에 대한 slave 케릭 목록 삭제
-            if (prograssed.indexOf(sha.sha) === -1) {
-              count   = count + sha.list.length;
-
-              for (const [k, r] of Object.entries(sha.list)) { // 크롤링 로그와 slave 케릭 정보 추가
-                let logData = JSON.stringify(r);
-                let query1 = `insert into member_crawler_log
-                set
-                  mb_integrity    = '${sha.sha}',
-                  mb_server       = '${r.server}',
-                  mb_class        = '${r.class}',
-                  mb_guild        = '${r.guild}',
-                  mb_nickname     = '${r.name}',
-                  mb_pvpLevel     = '${r.pvpLevel}',
-                  mb_itemLevel    = '${r.itemLevel}' `;
-                let query2 = `insert into member_slave
-                  set
-                    mb_integrity  = '${sha.sha}',
-                    mb_server     = '${r.server}',
-                    mb_class      = '${r.class}',
-                    mb_guild      = '${r.guild}',
-                    mb_nickname   = '${r.name}',
-                    mb_pvpLevel   = '${r.pvpLevel}',
-                    mb_itemLevel  = '${r.itemLevel}' `;
-                query(query1, (error, result) => {
-                  query(query2 + `, log_no = '${result.insertId}'`, () => {
-                    i++;
-                    console.log(">> [008] | ", i, "/", count);
-                    if(timeOut)
-                    {
-                      clearTimeout(timeOut);
-                    }
-                    timeOut = setTimeout(()=>{
-                      console.log(">> [009] | commit run");
-                      db.commit();
-                    }, 30000);
-                  });
-                });
-                prograssed.push(data.sha);
-              }
-            }
-          }
+          count++;
+          if(limit == count)
+            return syncMasterMemeberController(undefined, updateList, { next: 'updateMemberData' });
         });
       }
     }
 
+    // 3. db에 반영
+    else if(params.next == 'updateMemberData'){
+      let sql = "";
+      for (const [key, row] of Object.entries(data)) {
+        if(row.list.length){
+          // sql
+          sql += `\n\n/* ${row.nick} */\n`;
+          sql += `update member_master
+                    set
+                      mb_integrity  = '${row.sha}',
+                      updated_at    = now()
+                    where
+                      mb_nickname   = '${row.nick}';\n`;
+            sql += `delete from member_slave where mb_integrity = '${row.sha}';\n`;
+          
+          // 부캐정보 및 크롤링 로그
+          for (k in row.list) {
+            let r  = row.list[k];
+            sql += `insert into member_crawler_log
+                      set
+                        mb_integrity    = '${row.sha}',
+                        mb_server       = '${r.server}',
+                        mb_class        = '${r.class}',
+                        mb_guild        = '${r.guild}',
+                        mb_nickname     = '${r.name}',
+                        mb_pvpLevel     = '${r.pvpLevel}',
+                        mb_itemLevel    = '${r.itemLevel}';\n`;
+            sql += `insert into member_slave
+                      set
+                        mb_integrity  = '${row.sha}',
+                        mb_server     = '${r.server}',
+                        mb_class      = '${r.class}',
+                        mb_guild      = '${r.guild}',
+                        mb_nickname   = '${r.name}',
+                        mb_pvpLevel   = '${r.pvpLevel}',
+                        mb_itemLevel  = '${r.itemLevel}';\n`;
+          }
+        }
+      }
+      sql += `delete from member_slave
+                where
+                  mb_integrity NOT IN (
+                    select mb_integrity from member_master group by mb_integrity
+                  );`;
+      query(sql);
+      console.log(sql);
+    }
 
   }
 

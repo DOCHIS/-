@@ -2,7 +2,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 
 module.exports = function (config, emoji) {
-  var ROA_URL = "https://m-lostark.game.onstove.com";
+  var ROA_URL = "https://m-lostark.game.onstove.com/";
   return {
 
     /**
