@@ -159,6 +159,7 @@ module.exports = function () {
                     select mb_integrity from member_master group by mb_integrity
                   );`;
       query(sql);
+      close_db();
       console.log(sql);
     }
 
